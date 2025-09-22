@@ -1,0 +1,631 @@
+[
+  {
+    "textbook_id": 9,
+    "name": "1.1а Разминка: квадратное уравнение (дискриминант > 0)",
+    "question_template": "Решите уравнение: \\( x^2 - {P}x + {Q} = 0 \\).<br><i>Ответ введите через точку с запятой в порядке возрастания.</i>",
+  "answer_template": "{M};{N}",
+  "answer_type": "string",
+  "parameters": {
+    "M": { "type": "choice", "values": [1,2,2,3,3,4,4,5,5,6,6,7] },
+    "N": { "type": "choice", "values": [2,3,4,4,5,5,6,6,7,7,8,8] },
+    "P": { "type": "choice", "values": [3,5,6,7,8,9,10,11,12,13,14,15] },
+    "Q": { "type": "choice", "values": [2,6,8,12,15,20,24,30,35,42,48,56] }
+  },
+  "conditions": "M != N and P == M+N and Q == M*N"
+},
+  {
+    "textbook_id": 9,
+    "name": "1.1б Разминка: квадратное уравнение (дискриминант = 0)",
+    "question_template": "Решите уравнение: \\( x^2 - 2*{M}x + {M}^2 = 0 \\).<br><i>Ответ введите одним числом.</i>",
+  "answer_template": "{M}",
+  "answer_type": "numeric",
+  "parameters": {
+    "M": { "type": "choice", "values": [2,3,4,5,6,7,8,9,10,11] }
+  },
+  "conditions": ""
+},
+  {
+    "textbook_id": 9,
+    "name": "1.1в Разминка: формула сокращённого умножения",
+    "question_template": "Вычислите: \\( ({A}-{B})^2 \\).<br><i>Ответ введите числом.</i>",
+    "answer_template": "{(A-B)**2}",
+    "answer_type": "numeric",
+    "parameters": {
+      "A": { "type": "choice", "values": [5,6,7,8,9,10,11,12,13,14,15,16] },
+      "B": { "type": "choice", "values": [2,3,4,5,6,7,8,9,10,11,12,13] }
+    },
+    "conditions": "A > B"
+  },
+  {
+    "textbook_id": 9,
+    "name": "1.3а Практика: квадратное уравнение (теорема Виета)",
+    "question_template": "Решите уравнение с помощью теоремы Виета: \\( x^2 - {S}x + {P} = 0 \\).<br><i>Ответ введите через точку с запятой.</i>",
+    "answer_template": "{int((S - ((S**2 - 4*P)**0.5))/2)};{int((S + ((S**2 - 4*P)**0.5))/2)}",
+    "answer_type": "string",
+    "parameters": {
+      "S": { "type": "choice", "values": [5,6,7,8,9,10,11,12,13,14,15,16] },
+      "P": { "type": "choice", "values": [6,8,10,12,14,15,16,18,20,21,24,28] }
+    },
+    "conditions": "S**2 - 4*P >= 0"
+  },
+  {
+    "textbook_id": 9,
+    "name": "1.3б Практика: разложение на множители",
+    "question_template": "Разложите на множители: \\( x^2 - {K}^2 \\).<br><i>Ответ введите в виде произведения скобок.</i>",
+    "answer_template": "(x-{K})(x+{K})",
+    "answer_type": "string",
+    "parameters": {
+      "K": { "type": "choice", "values": [2,3,4,5,6,7,8,9,10,11,12,13] }
+    },
+    "conditions": ""
+  },
+  {
+    "textbook_id": 9,
+    "name": "1.3в Практика: преобразование выражения",
+    "question_template": "Упростите выражение: \\( (x+{A})^2-(x-{A})^2 \\).<br><i>Ответ введите в виде многочлена.</i>",
+    "answer_template": "{4*A}x",
+    "answer_type": "string",
+    "parameters": {
+      "A": { "type": "choice", "values": [1,2,3,4,5,6,7,8,9,10,11,12] }
+    },
+    "conditions": ""
+  },
+  {
+    "textbook_id": 9,
+    "name": "2.1а Разминка: сокращение дроби",
+    "question_template": "Сократите дробь: \\( \\frac{{{A}}}{{{B}}} \\).<br><i>Ответ введите в виде несократимой дроби a/b.</i>",
+  "answer_template": "{A//gcd(A,B)}/{B//gcd(A,B)}",
+  "answer_type": "string",
+  "parameters": {
+    "A": {
+      "type": "choice",
+      "values": [24, 30, 42, 36, 48, 60, 18, 27, 50, 63, 90, 72]
+    },
+    "B": {
+      "type": "choice",
+      "values": [36, 45, 63, 54, 72, 90, 27, 36, 75, 84, 120, 96]
+    }
+  },
+  "conditions": "gcd(A,B)>1"
+},
+{
+  "textbook_id": 9,
+  "name": "2.1б Разминка: общий знаменатель дробей",
+ "question_template": "Найдите наименьший общий знаменатель дробей \\( \\frac{1}{{A}} \\) и \\( \\frac{1}{{B}} \\).<br><i>Ответ введите одним числом.</i>",
+  "answer_template": "{lcm(A, B)}",
+  "answer_type": "numeric",
+  "parameters": {
+    "A": {
+      "type": "choice",
+      "values": [4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 16, 18]
+    },
+    "B": {
+      "type": "choice",
+      "values": [6, 8, 10, 12, 9, 15, 16, 18, 20, 24, 25, 30]
+    }
+  },
+  "conditions": "A > 0 and B > 0"
+},
+ {
+    "textbook_id": 9,
+    "name": "2.2а Фронтальная: квадрат суммы",
+    "question_template": "Разверните по формуле: \\( (x+{K})^2 \\).<br><i>Ответ введите в виде многочлена.</i>",
+    "answer_template": "x^2+{2*K}x+{K*K}",
+    "answer_type": "string",
+    "parameters": {
+      "K": { "type": "choice", "values": [2,3,4,5,6,7,8,9,10] }
+    },
+    "conditions": ""
+  },
+   {
+    "textbook_id": 9,
+    "name": "2.2б Фронтальная: квадрат разности",
+    "question_template": "Разверните по формуле: \\( (a-{M})^2 \\).<br><i>Ответ введите в виде многочлена.</i>",
+    "answer_template": "a^2-{2*M}a+{M*M}",
+    "answer_type": "string",
+    "parameters": {
+      "M": { "type": "choice", "values": [2,3,4,5,6,7,8,9,10] }
+    },
+    "conditions": ""
+  },
+  {
+    "textbook_id": 9,
+    "name": "2.2в Фронтальная: разность квадратов",
+    "question_template": "Разложите на множители: \\( x^2-{N}^2 \\).<br><i>Ответ введите в виде произведения скобок.</i>",
+    "answer_template": "(x-{N})(x+{N})",
+    "answer_type": "string",
+    "parameters": {
+      "N": { "type": "choice", "values": [2,3,4,5,6,7,8,9,10] }
+    },
+    "conditions": ""
+  },
+  {
+    "textbook_id": 9,
+    "name": "2.2г Фронтальная: разложение с коэффициентами",
+    "question_template": "Разложите на множители: \\( {A}y^2-{B}^2 \\).<br><i>Ответ введите в виде произведения скобок.</i>",
+  "answer_template": "({sqrtA}y-{B})({sqrtA}y+{B})",
+  "answer_type": "string",
+  "parameters": {
+    "A": { "type": "choice", "values": [4,9,16,25,36] },
+    "sqrtA": { "type": "choice", "values": [2,3,4,5,6] },
+    "B": { "type": "choice", "values": [2,3,4,5,6] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 9,
+  "name": "2.3а Сокращение дробей",
+  "question_template": "Сократите дробь: \\( \\frac{{{A}x^2}}{{{B}x}} \\).<br><i>Ответ введите в виде алгебраической дроби.</i>",
+  "answer_template": "{C}x/{D}",
+  "answer_type": "string",
+  "parameters": {
+    "A": { "type": "choice", "values": [6, 8, 10, 12] },
+    "B": { "type": "choice", "values": [9, 12, 15, 18] },
+    "C": { "type": "choice", "values": [2, 2, 2, 2] },
+    "D": { "type": "choice", "values": [3, 3, 3, 3] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 9,
+  "name": "2.3б Разложение и сокращение дробей",
+  "question_template": "Преобразуйте выражение: \\( \\frac{{{P}^2 - {Q}^2}}{{{P} - {Q}}} \\).<br><i>Ответ введите в упрощённом виде.</i>",
+  "answer_template": "{P}+{Q}",
+  "answer_type": "string",
+  "parameters": {
+    "P": { "type": "choice", "values": ["a", "m", "x"] },
+    "Q": { "type": "choice", "values": ["b", "n", "y"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 9,
+  "name": "4.1а Найдите значение квадратного корня (целое число)",
+  "question_template": "Найдите значение корня: \\(\\sqrt{{{N}}}\\)<br><i>Ответ введите одним числом.</i>",
+  "answer_template": "{int(N ** 0.5)}",
+  "answer_type": "string",
+  "parameters": {
+    "N": { "type": "choice", "values": [1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225, 256, 400, 625, 900, 1600] }
+  },
+  "conditions": "int(N ** 0.5) ** 2 == N"
+},
+{
+  "textbook_id": 9,
+  "name": "4.1б Найдите значение квадратного корня (десятичные дроби)",
+  "question_template": "Найдите значение корня: \\(\\sqrt{{{X}}}\\)<br><i>Ответ введите в виде десятичной дроби.</i>",
+  "answer_template": "{round(X ** 0.5, 2)}",
+  "answer_type": "numeric",
+  "parameters": {
+    "X": {
+      "type": "choice",
+      "values": [0.01, 0.04, 0.09, 0.16, 0.25, 0.36, 0.49, 1.44, 2.25, 6.25, 12.25]
+    }
+  },
+  "conditions": "X > 0 and round(X ** 0.5, 2) ** 2 == X"
+},
+{
+  "textbook_id": 9,
+  "name": "4.1в Найдите значение квадратного корня (дробь, согласованные значения)",
+  "question_template": "Найдите значение корня: \\(\\sqrt{{\\frac{{{A}}}{{{B}}}}}\\)<br><i>Ответ введите в виде десятичной дроби.</i>",
+  "answer_template": "{round((A / B) ** 0.5, 2)}",
+  "answer_type": "numeric",
+  "parameters": {
+    "A": {
+      "type": "choice",
+      "values": [81, 49, 36, 25, 16, 9, 4, 100, 64, 121, 144, 1]
+    },
+    "B": {
+      "type": "choice",
+      "values": [4, 9, 4, 1, 4, 9, 4, 25, 16, 121, 36, 1]
+    }
+  },
+  "conditions": "A > 0 and B > 0"
+},
+{
+  "textbook_id": 9,
+  "name": "4.2а Найдите значение корня (произведение десятичных дробей, точный результат)",
+  "question_template": "Найдите значение выражения: \\(\\sqrt{{{A} \\cdot {B} \\cdot {C}}}\\)<br><i>Ответ введите в виде десятичной дроби.</i>",
+  "answer_template": "{R}",
+  "answer_type": "numeric",
+  "parameters": {
+    "A": {
+      "type": "choice",
+      "values": [1.21, 1.44, 1.69, 1.96, 1.21, 2.25, 1.44, 1.69, 2.56, 2.89, 1.96, 2.25]
+    },
+    "B": {
+      "type": "choice",
+      "values": [0.09, 0.36, 0.25, 0.09, 0.16, 0.04, 0.25, 0.36, 0.16, 0.09, 0.25, 0.49]
+    },
+    "C": {
+      "type": "choice",
+      "values": [0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001]
+    },
+    "R": {
+      "type": "choice",
+      "values": [0.0033, 0.0072, 0.0065, 0.0042, 0.0044, 0.0030, 0.0060, 0.0078, 0.0064, 0.0051, 0.0070, 0.0105]
+    }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 9,
+  "name": "4.2г Найдите значение выражения (корень из произведения смешанных дробей)",
+  "question_template": "Найдите значение выражения: \\(\\sqrt{{{A1}\\dfrac{{{A2}}}{{{A3}}} \\cdot {B1}\\dfrac{{{B2}}}{{{B3}}}}}\\)<br><i>Ответ введите в виде десятичной дроби.</i>",
+  "answer_template": "{R}",
+  "answer_type": "numeric",
+  "parameters": {
+    "A1": { "type": "choice", "values": [1, 2, 3, 2, 1, 2, 3] },
+    "A2": { "type": "choice", "values": [1, 1, 1, 1, 2, 2, 1] },
+    "A3": { "type": "choice", "values": [2, 2, 4, 4, 4, 4, 2] },
+
+    "B1": { "type": "choice", "values": [1, 2, 3, 2, 1, 2, 3] },
+    "B2": { "type": "choice", "values": [1, 1, 1, 1, 2, 2, 1] },
+    "B3": { "type": "choice", "values": [2, 2, 4, 4, 4, 4, 2] },
+
+    "R": {
+      "type": "choice",
+      "values": [1.5, 2.5, 3.25, 2.25, 1.75, 2.25, 3.5]
+    }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 9,
+  "name": "4.2е Найдите значение выражения (умножение корней с точным результатом)",
+  "question_template": "Найдите значение выражения: \\(\\sqrt{{{A}}} \\cdot \\sqrt{{{B}}}\\)<br><i>Ответ введите в виде целого числа.</i>",
+  "answer_template": "{R}",
+  "answer_type": "numeric",
+  "parameters": {
+    "A": {
+      "type": "choice",
+      "values": [50, 72, 98, 162, 242, 450, 648]
+    },
+    "B": {
+      "type": "choice",
+      "values": [2, 2, 2, 2, 2, 2, 2]
+    },
+    "R": {
+      "type": "choice",
+      "values": [10, 12, 14, 18, 22, 30, 36]
+    }
+  },
+  "conditions": "True"
+},
+{
+  "textbook_id": 9,
+  "name": "4.2з Найдите значение выражения (произведение корней из дробей, точный результат)",
+  "question_template": "Найдите значение выражения: \\(\\sqrt{\\dfrac{{{A1}}}{{{A2}}}} \\cdot \\sqrt{\\dfrac{{{B1}}}{{{B2}}}}\\)<br><i>Ответ введите в виде десятичной дроби.</i>",
+  "answer_template": "{R}",
+  "answer_type": "numeric",
+  "parameters": {
+    "A1": { "type": "choice", "values": [1, 1, 1, 1] },
+    "A2": { "type": "choice", "values": [2, 2, 2, 2] },
+    "B1": { "type": "choice", "values": [1, 1, 2, 2] },
+    "B2": { "type": "choice", "values": [2, 8, 4, 16] },
+    "R": {
+      "type": "choice",
+      "values": [0.5, 0.25, 0.5, 0.25]
+    }
+  },
+  "conditions": "True"
+},
+{
+  "textbook_id": 9,
+  "name": "4.3а Вынесите множитель из-под знака корня (простые числа)",
+  "question_template": "Вынесите множитель из-под знака корня: \\(\\sqrt{{{N}}}\\)<br><i>Ответ введите в виде: \\(a\\sqrt{b}\\)</i>",
+  "answer_template": "{A}*sqrt({B})",
+  "answer_type": "algebraic",
+  "parameters": {
+    "N": { "type": "choice", "values": [20, 50, 72, 98, 18, 32, 200] },
+    "A": { "type": "choice", "values": [2, 5, 6, 7, 3, 4, 10] },
+    "B": { "type": "choice", "values": [5, 2, 2, 2, 2, 2, 2] }
+  },
+  "conditions": "True"
+},
+{
+  "textbook_id": 9,
+  "name": "4.3в Вынесите множитель из-под корня (натуральные числа)",
+  "question_template": "Вынесите множитель из-под знака корня: \\(\\sqrt{{{N}}}\\)<br><i>Ответ введите в виде: a√b</i>",
+  "answer_template": "{A}*sqrt({B})",
+  "answer_type": "algebraic",
+  "parameters": {
+    "N": {
+      "type": "choice",
+      "values": [200, 72, 98, 50, 75, 80, 128]
+    },
+    "A": {
+      "type": "choice",
+      "values": [10, 6, 7, 5, 5, 4, 8]
+    },
+    "B": {
+      "type": "choice",
+      "values": [2, 2, 2, 2, 3, 5, 2]
+    }
+  },
+  "conditions": "True"
+},
+{
+  "textbook_id": 9,
+  "name": "4.3д Вынесите множитель с десятичным коэффициентом",
+  "question_template": "Упростите выражение: \\({C}\\sqrt{{{N}}}\\)<br><i>Ответ введите в виде: a√b</i>",
+  "answer_template": "{A}*sqrt({B})",
+  "answer_type": "algebraic",
+  "parameters": {
+    "N": {
+      "type": "choice",
+      "values": [75, 50, 32, 72, 98, 80, 18]
+    },
+    "C": {
+      "type": "choice",
+      "values": [0.2, 0.5, 0.25, 0.5, 0.5, 0.25, 0.5],
+      "constraints": [{ "type": "multiple_of", "value": 0.01 }]
+    },
+    "A": {
+      "type": "choice",
+      "values": [1, 5, 2, 3, 3.5, 2, 3],
+      "constraints": [{ "type": "multiple_of", "value": 0.01 }]
+    },
+    "B": {
+      "type": "choice",
+      "values": [3, 2, 2, 2, 2, 5, 2]
+    }
+  },
+  "conditions": "True"
+},
+{
+  "textbook_id": 9,
+  "name": "4.4а Упростите выражение с корнями (одинаковый радиканд)",
+  "question_template": "Упростите выражение: \\(\\sqrt{{{N1}}} + \\sqrt{{{N2}}} - \\sqrt{{{N3}}}\\)<br><i>Ответ введите в виде: a√b</i>",
+  "answer_template": "{A}*sqrt({B})",
+  "answer_type": "algebraic",
+  "parameters": {
+    "N1": { "type": "choice", "values": [75, 48, 27, 12, 108, 300, 192] },
+    "N2": { "type": "choice", "values": [48, 12, 75, 48, 12, 192, 108] },
+    "N3": { "type": "choice", "values": [300, 75, 108, 27, 192, 300, 192] },
+    "A": { "type": "choice", "values": [-1, 1, 0, 2, -2, 3, -3] },
+    "B": { "type": "choice", "values": [3, 3, 3, 3, 3, 3, 3] }
+  },
+  "conditions": "True"
+},
+{
+    "textbook_id": 9,
+    "name": "4.4b  Деление алгебраических дробей (сокращение, общий множитель m)",
+    "question_template": "Выполните деление: \\(\\frac{{{P}}m}{{{Q}}n} : \\frac{{{R}}m^{2}}{{{S}}}\\)<br><i>Ответ введите в виде алгебраического выражения, максимально сократив.</i>",
+  "answer_template": "({P}*{S})/({Q}*{R})*1/(m*n)",
+  "answer_type": "algebraic",
+  "parameters": {
+    "P": { "type": "choice", "values": [5, 3, 8, 12, 4, 9, 6, 10, 15, 7, 11, 14] },
+    "Q": { "type": "choice", "values": [6, 4, 16, 18, 9, 20, 12, 24, 30, 25, 28, 32] },
+    "R": { "type": "choice", "values": [15, 6, 2, 3, 5, 4, 10, 8, 12, 9, 14, 18] },
+    "S": { "type": "choice", "values": [8, 5, 2, 3, 4, 6, 10, 12, 15, 20, 25, 30] }
+  },
+  "conditions": "P>0 and Q>0 and R>0 and S>0"
+},
+  {
+    "textbook_id": 9,
+    "name": "4.4c Деление алгебраических дробей (сокращение, общий множитель a)",
+"question_template": "Выполните деление: \\(\\frac{a^{2}}{{{U}}b} : \\frac{ab}{{{V}}}\\)<br><i>Ответ введите в виде алгебраического выражения, максимально сократив.</i>",
+  "answer_template": "({V}/{U})*a/b^2",
+  "answer_type": "algebraic",
+  "parameters": {
+    "U": { "type": "choice", "values": [12, 8, 10, 6, 9, 15, 20, 18, 16, 24, 14, 5] },
+    "V": { "type": "choice", "values": [36, 32, 50, 24, 27, 45, 40, 54, 48, 96, 28, 10] }
+  },
+  "conditions": "U>0 and V>0"
+},
+{
+  "textbook_id": 9,
+  "name": "6.а Вычисление выражения с дробями.",
+  "question_template": "Найдите значение выражения: \\( {A}\\left(\\frac{{1}}{{{B}}}\\right)^2 - {C}\\cdot\\frac{{1}}{{{B}}} \\).<br><i>Ответ введите одним числом.</i>",
+  "answer_template": "{(A - C*B)//(B*B)}",
+  "answer_type": "numeric",
+  "parameters": {
+    "A": { "type": "choice", "values": [36, 18, 44, 30, 30, 10, 45, 24, 48, 48, 45, 24] },
+    "B": { "type": "choice", "values": [3, 9, 4, 3, 6, 5, 5, 3, 4, 4, 3, 6] },
+    "C": { "type": "choice", "values": [36, 29, 11, 34, 29, 12, 14, 41, 12, 40, 12, 10] }
+  },
+  "conditions": "B != 0 and (A - C*B)%(B*B) == 0"
+},
+{
+  "textbook_id": 9,
+  "name": "6.б Сложение дробей с разными знаменателями",
+  "question_template": "Вычислите: \\( \\frac{{A}}{{B}} + \\frac{{C}}{{D}} \\).<br><i>Если в ответе получается десятичная дробь с большим количеством знаков после запятой — округлите до сотых.</i>",
+  "answer_template": "{round(A/B + C/D, 2)}",
+  "answer_type": "numeric",
+  "parameters": {
+    "A": { "type": "choice", "values": [4, 7, 3, 5, 6, 8, 9, 10, 12, 15, 18, 20] },
+    "B": { "type": "choice", "values": [25, 30, 40, 50, 60, 12, 14, 16, 18, 22, 24, 28] },
+    "C": { "type": "choice", "values": [15, 11, 13, 9, 7, 8, 5, 6, 10, 12, 14, 16] },
+    "D": { "type": "choice", "values": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] }
+  },
+  "conditions": "B!=0 and D!=0"
+},
+{
+    "textbook_id": 9,
+    "name": "6.в Разность дробей",
+    "question_template": "Вычислите: \\( \\frac{{A}}{{B}} - \\frac{{C}}{{D}} \\).<br><i>Если в ответе получается десятичная дробь с большим количеством знаков после запятой — округлите до сотых.</i>",
+    "answer_template": "{round(A/B - C/D, 2)}",
+    "answer_type": "numeric",
+    "parameters": {
+      "A": { "type": "choice", "values": [3, 7, 5, 8, 9, 11, 12, 14, 15, 18, 20, 22] },
+      "B": { "type": "choice", "values": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] },
+      "C": { "type": "choice", "values": [9, 4, 6, 7, 8, 10, 12, 14, 15, 16, 18, 20] },
+      "D": { "type": "choice", "values": [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16] }
+    },
+    "conditions": "B!=0 and D!=0"
+  },
+  {
+    "textbook_id": 9,
+    "name": "6.г Сложное выражение с дробями и делением",
+    "question_template": "Найдите значение выражения: \\( \\left( \\frac{{A}}{{B}} + \\frac{{C}}{{D}} \\right) : \\frac{{E}}{{F}} \\).<br><i>Если в ответе получается десятичная дробь с большим количеством знаков после запятой — округлите до сотых.</i>",
+    "answer_template": "{round((A/B + C/D) / (E/F), 2)}",
+    "answer_type": "numeric",
+    "parameters": {
+      "A": { "type": "choice", "values": [19, 21, 17, 23, 25, 27, 29, 31, 33, 35, 37, 39] },
+      "B": { "type": "choice", "values": [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19] },
+      "C": { "type": "choice", "values": [11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33] },
+      "D": { "type": "choice", "values": [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34] },
+      "E": { "type": "choice", "values": [5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27] },
+      "F": { "type": "choice", "values": [48, 36, 40, 42, 44, 50, 52, 54, 56, 60, 64, 66] }
+    },
+    "conditions": "B!=0 and D!=0 and F!=0 and E!=0"
+  },
+  {
+    "textbook_id": 9,
+    "name": "6.д Сложное выражение с дробями и умножением",
+    "question_template": "Найдите значение выражения: \\( \\left( \\frac{{A}}{{B}} + \\frac{{C}}{{D}} \\right) \\cdot \\frac{{E}}{{F}} \\).<br><i>Если в ответе получается десятичная дробь с большим количеством знаков после запятой — округлите до сотых.</i>",
+    "answer_template": "{round((A/B + C/D) * (E/F), 2)}",
+    "answer_type": "numeric",
+    "parameters": {
+      "A": { "type": "choice", "values": [14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36] },
+      "B": { "type": "choice", "values": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22] },
+      "C": { "type": "choice", "values": [17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39] },
+      "D": { "type": "choice", "values": [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21] },
+      "E": { "type": "choice", "values": [11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33] },
+      "F": { "type": "choice", "values": [15, 16, 18, 20, 22, 24, 25, 27, 28, 30, 32, 35] }
+    },
+    "conditions": "B!=0 and D!=0 and F!=0"
+  },
+  {
+  "textbook_id": 9,
+  "name": "6.е Выражение с делением и скобками",
+  "question_template": "Найдите значение выражения: \\( \\left( {A}+\\frac{{B}}{{C}} \\right) : \\left( \\frac{{D}}{{E}} + {F}+\\frac{{G}}{{H}} \\right) \\).<br><i>Ответ округлите до сотых.</i>",
+  "answer_template": "{round((A + B/C) / (D/E + F + G/H), 2)}",
+  "answer_type": "numeric",
+  "parameters": {
+    "A": { "type": "choice", "values": [5, 3, 9, 3, 10, 9, 9, 7, 1, 2, 8, 4] },
+    "B": { "type": "choice", "values": [11, 1, 3, 6, 2, 10, 11, 6, 11, 8, 6, 8] },
+    "C": { "type": "choice", "values": [17, 17, 17, 19, 15, 13, 11, 11, 17, 17, 15, 17] },
+    "D": { "type": "choice", "values": [18, 12, 18, 14, 14, 14, 12, 12, 14, 20, 18, 16] },
+    "E": { "type": "choice", "values": [17, 17, 17, 19, 21, 21, 21, 21, 21, 17, 17, 17] },
+    "F": { "type": "choice", "values": [3, 3, 5, 5, 3, 5, 2, 4, 2, 3, 5, 4] },
+    "G": { "type": "choice", "values": [11, 11, 13, 13, 13, 11, 13, 9, 13, 13, 13, 11] },
+    "H": { "type": "choice", "values": [17, 11, 13, 17, 11, 13, 13, 11, 17, 17, 13, 17] }
+  },
+  "conditions": "C!=0 and E!=0 and H!=0"
+},
+{
+  "textbook_id": 9,
+  "name": "6.ж Деление десятичных дробей",
+  "question_template": "Найдите значение выражения: \\( \\frac{{A}}{{B}} \\).<br><i>Ответ введите целым числом.</i>",
+  "answer_template": "{int(A/B)}",
+  "answer_type": "numeric",
+  "parameters": {
+    "A": { "type": "choice", "values": [6.5, 12.6, 9.6, 16.9, 7.8, 21.45, 13.2, 15.6, 19.5] },
+    "B": { "type": "choice", "values": [1.3, 2.1, 3.2, 1.3, 2.6, 4.29, 2.2, 2.6, 3.9] }
+  },
+  "conditions": "B != 0 and abs(A/B - int(A/B)) < 1e-9"
+},
+{
+  "textbook_id": 9,
+  "name": "6.з Разность смешанного числа и дроби",
+  "question_template": "Найдите значение выражения: \\( {A}\\tfrac{{{B}}}{{{C}}} - \\tfrac{{{D}}}{{{E}}} \\).<br><i>Ответ округлите до одного знака после запятой.</i>",
+  "answer_template": "{round((A + B/C) - D/E, 1)}",
+  "answer_type": "numeric",
+  "parameters": {
+    "A": { "type": "choice", "values": [12, 7, 7, 10, 16, 17, 8, 11, 16, 7, 17, 16] },
+    "B": { "type": "choice", "values": [10, 3, 2, 2, 12, 6, 8, 12, 10, 1, 6, 12] },
+    "C": { "type": "choice", "values": [5, 5, 3, 10, 2, 4, 5, 2, 2, 5, 3, 10] },
+    "D": { "type": "choice", "values": [41, 18, 71, 95, 71, 36, 33, 67, 36, 18, 83, 41] },
+    "E": { "type": "choice", "values": [10, 12, 30, 25, 10, 10, 15, 10, 20, 10, 10, 10] }
+  },
+  "conditions": "C!=0 and E!=0"
+},
+{
+  "textbook_id": 9,
+  "name": "7.а Линейное уравнение с раскрытием скобок",
+   "question_template": "Решите уравнение: \\( {A} - {B}(2x+{C}) = {D} - {E}x \\).<br><i>Ответ введите числом с одним знаком после запятой или в виде обыкновенной дроби.</i>",
+  "answer_template": "{round((D - A + B*C)/(2*B - E), 1)}",
+  "answer_type": "numeric",
+  "parameters": {
+    "A": { "type": "choice", "values": [2, 5, 7, 8, 10, 12, 15, 18, 20, 22, 25, 30] },
+    "B": { "type": "choice", "values": [3, 2, 4, 5, 6, 3, 7, 4, 8, 5, 6, 9] },
+    "C": { "type": "choice", "values": [2, 1, 3, 2, 1, 4, 2, 5, 2, 3, 2, 4] },
+    "D": { "type": "choice", "values": [5, 8, 6, 10, 12, 9, 18, 14, 25, 19, 21, 28] },
+    "E": { "type": "choice", "values": [4, 3, 5, 6, 7, 2, 9, 3, 10, 4, 5, 7] }
+  },
+  "conditions": "2*B - E != 0"
+},
+{
+  "textbook_id": 9,
+  "name": "7.б Линейное уравнение с дробями",
+  "question_template": "Решите уравнение: \\( \\frac{{P}x+{Q}}{{R}} + {S} = \\frac{{T}x}{{U}} \\).<br><i>Ответ введите числом, целым или с одним знаком после запятой.</i>",
+  "answer_template": "{round((U*S*R - Q*U) / (P*U - T*R), 1)}",
+  "answer_type": "numeric",
+  "parameters": {
+    "P": { "type": "choice", "values": [5, 4, 6, 7, 8, 3, 9, 10, 12, 14, 15, 18] },
+    "Q": { "type": "choice", "values": [4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26] },
+    "R": { "type": "choice", "values": [2, 3, 2, 4, 5, 6, 2, 3, 4, 5, 6, 2] },
+    "S": { "type": "choice", "values": [3, 5, 2, 4, 6, 7, 8, 9, 10, 12, 14, 15] },
+    "T": { "type": "choice", "values": [9, 6, 8, 10, 12, 14, 15, 18, 20, 22, 24, 25] },
+    "U": { "type": "choice", "values": [4, 5, 6, 2, 3, 4, 5, 6, 2, 3, 4, 5] }
+  },
+  "conditions": "P*U - T*R != 0 and R!=0 and U!=0"
+},
+{
+  "textbook_id": 9,
+  "name": "8.а Квадратное уравнение с общим множителем",
+  "question_template": "Найдите корни уравнения: \\( {A}x^2 - {B}x = 0 \\).<br><i>Если корней несколько, запишите их в ответ без пробелов в порядке возрастания через точку с запятой.</i>",
+  "answer_template": "0;{B//A}",
+  "answer_type": "string",
+  "parameters": {
+    "A": { "type": "choice", "values": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15] },
+    "B": { "type": "choice", "values": [10, 12, 16, 20, 18, 21, 24, 27, 30, 33, 36, 45] }
+  },
+  "conditions": "A!=0 and B%A==0"
+},
+{
+  "textbook_id": 9,
+  "name": "8.б Квадратное уравнение через дискриминант",
+  "question_template": "Решите уравнение: \\( x^2 - {P}x - {Q} = 0 \\).<br><i>Если корней несколько, запишите их через точку с запятой в порядке возрастания.</i>",
+  "answer_template": "{min((P - int((P*P + 4*Q)**0.5))//2, (P + int((P*P + 4*Q)**0.5))//2)};{max((P - int((P*P + 4*Q)**0.5))//2, (P + int((P*P + 4*Q)**0.5))//2)}",
+  "answer_type": "string",
+  "parameters": {
+    "P": { "type": "choice", "values": [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4, 4] },
+    "Q": { "type": "choice", "values": [2, 6, 20, 3, 8, 15, 24, 4, 10, 18, 5, 12] }
+  },
+  "conditions": "P*P + 4*Q >= 0 and int((P*P + 4*Q)**0.5)**2 == P*P + 4*Q"
+},
+{
+  "textbook_id": 9,
+  "name": "8.в Квадратное уравнение через дискриминант",
+  "question_template": "Найдите корни уравнения: \\( x^2 + {Q} = {P}x \\).<br><i>Если корней несколько, запишите их через точку с запятой в порядке возрастания.</i>",
+  "answer_template": "{min((P - int((P*P - 4*Q)**0.5))//2, (P + int((P*P - 4*Q)**0.5))//2)};{max((P - int((P*P - 4*Q)**0.5))//2, (P + int((P*P - 4*Q)**0.5))//2)}",
+  "answer_type": "string",
+  "parameters": {
+    "P": { "type": "choice", "values": [2, 3, 4, 4, 5, 5, 6, 6, 6, 7, 7, 7] },
+    "Q": { "type": "choice", "values": [1, 2, 3, 4, 4, 6, 5, 8, 9, 6, 10, 12] }
+  },
+  "conditions": "P*P - 4*Q >= 0 and int((P*P - 4*Q)**0.5)**2 == P*P - 4*Q"
+},
+{
+  "textbook_id": 9,
+  "name": "9.а Уравнение с квадратами скобок",
+  "question_template": "Решите уравнение: \\((x - {A})^2 + (x + {B})^2 = 2x^2\\).<br><i>Ответ введите числом (целым или с одним знаком после запятой).</i>",
+  "answer_template": "{round((A*A - B*B)/(2*(A+B)), 1)}",
+"answer_type": "numeric",
+  "parameters": {
+    "A": { "type": "choice", "values": [4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26] },
+    "B": { "type": "choice", "values": [9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31] }
+  },
+  "conditions": "A+B != 0"
+},
+{
+  "textbook_id": 9,
+  "name": "9.б Квадратное уравнение с приведением подобных",
+  "question_template": "Решите уравнение: \\({A}x^2 + {B} = {B} + {C}x\\).<br><i>Если корней несколько, запишите их в ответ без пробелов в порядке возрастания через точку с запятой.</i>",
+  "answer_template": "0;{C//A}",
+  "answer_type": "string",
+  "parameters": {
+    "A": { "type": "choice", "values": [2, 3, 4, 5, 6, 7, 8] },
+    "B": { "type": "choice", "values": [7, 5, 9, 11, 13, 15, 17] },
+    "C": { "type": "choice", "values": [24, 18, 12, 20, 30, 14, 16] }
+  },
+  "conditions": "A!=0 and C % A == 0"
+}
+
+
+
+
+
+]
