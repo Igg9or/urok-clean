@@ -2752,6 +2752,169 @@
     }
   },
   "conditions": "A != 0"
+},
+{
+  "textbook_id": 6,
+  "name": "55.а Сложение дробей с одинаковым знаменателем",
+  "question_template": "Выполните действие:<br>\\( \\tfrac{{x}}{{{D}}} + \\tfrac{{y}}{{{D}}} \\)<br><i>Ответ в виде дроби</i>",
+  "answer_template": "(x+y)/{D}",
+  "answer_type": "string",
+  "parameters": {
+    "D": { "type": "choice", "values": [2,3,4,5,6,7,8,9] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "55.б Вычитание дробей с одинаковым знаменателем",
+  "question_template": "Выполните действие:<br>\\( \\tfrac{{{A}b^2}}{{{D}}} - \\tfrac{{{B}b^2}}{{{D}}} \\)<br><i>Ответ в виде дроби</i>",
+  "answer_template": "{A-B}b^2/{D}",
+  "answer_type": "string",
+  "parameters": {
+    "A": { "type": "choice", "values": [5,6,7,8,9,10,11,12] },
+    "B": { "type": "choice", "values": [2,3,4,6,7,8,9,13] },
+    "D": { "type": "choice", "values": [2,3,4,5,6,7,8,9] }
+  },
+  "conditions": "A > B"
+},
+{
+  "textbook_id": 6,
+  "name": "55.в Вычитание дробей с одинаковым знаменателем",
+  "question_template": "Выполните действие:<br>\\( \\tfrac{{x+y}}{{{D}}} - \\tfrac{{x}}{{{D}}} \\)<br><i>Ответ в виде дроби</i>",
+  "answer_template": "y/{D}",
+  "answer_type": "string",
+  "parameters": {
+    "D": { "type": "choice", "values": [2,3,4,5,6,7,8,9] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "55.г Сложение дробей с одинаковым знаменателем",
+  "question_template": "Выполните действие:<br>\\( \\tfrac{{2c-x}}{{{D}}} + \\tfrac{{x}}{{{D}}} \\)<br><i>Ответ в виде дроби</i>",
+  "answer_template": "2c/{D}",
+  "answer_type": "string",
+  "parameters": {
+    "D": { "type": "choice", "values": [2,3,4,5,6,7,8,9] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "56.а Преобразование разности дробей (рандом)",
+  "question_template": "Представьте в виде дроби:<br>\\( \\tfrac{m}{{{D}p}} - \\tfrac{m-p}{{{D}p}} \\)<br><i>Ответ в виде дроби</i>",
+  "answer_template": "1/{D}",
+  "answer_type": "string",
+  "parameters": {
+    "D": { "type": "choice", "values": [2,3,4,5,6,7,8,9] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "56.б Преобразование разности дробей (рандом)",
+  "question_template": "Представьте в виде дроби:<br>\\( \\tfrac{a+b}{{{D}}} - \\tfrac{a-{K}b}{{{D}}} \\)<br><i>Ответ в виде дроби</i>",
+  "answer_template": "{1+K}b/{D}",
+  "answer_type": "string",
+  "parameters": {
+    "D": { "type": "choice", "values": [4,6,8,10,12,14,16,18] },
+    "K": { "type": "choice", "values": [1,2,3,4,5,6,7,8] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "58.а Сложение дробей с одинаковым знаменателем",
+  "question_template": "Выполните действие:<br>\\( \\tfrac{{{A}-{B}x}}{{x}} + \\tfrac{{{C}-x}}{{x}} \\)<br><i>Ответ в виде дроби</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "A": { "type": "choice", "values": [17, 15, 20, 12, 25, 30] },
+    "B": { "type": "choice", "values": [12, 7, 9, 5, 11, 6] },
+    "C": { "type": "choice", "values": [10, 8, 12, 6, 15, 9] },
+    "ANS": { "type": "choice", "values": ["(27-13x)/x","(23-8x)/x","(32-10x)/x","(18-6x)/x","(40-12x)/x","(39-7x)/x"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "58.б Вычитание дробей с одинаковым знаменателем",
+  "question_template": "Выполните действие:<br>\\( \\tfrac{{{A}p-1}}{{{D}p^2}} - \\tfrac{{1-{B}p}}{{{D}p^2}} \\)<br><i>Ответ в виде дроби</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "A": { "type": "choice", "values": [12, 8, 10, 15, 20, 6] },
+    "B": { "type": "choice", "values": [3, 5, 7, 2, 4, 6] },
+    "D": { "type": "choice", "values": [3, 2, 4, 5, 6, 7] },
+    "ANS": { "type": "choice", "values": ["(15p-2)/3p^2","(13p-2)/2p^2","(17p-2)/4p^2","(17p-2)/5p^2","(24p-2)/6p^2","(12p-2)/7p^2"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "58.в Вычитание дробей с одинаковым знаменателем (с сокращением)",
+  "question_template": "Выполните действие:<br>\\( \\frac{{{A}y-{B}}}{{{C}y}} - \\frac{y+{D}}{{{C}y}} \\)<br><i>Ответ в виде дроби</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "A": { "type": "choice", "values": [6, 7, 8, 9, 10, 11] },
+    "B": { "type": "choice", "values": [3, 4, 5, 6, 2, 7] },
+    "C": { "type": "choice", "values": [5, 6, 7, 8, 9, 10] },
+    "D": { "type": "choice", "values": [2, 3, 4, 2, 5, 1] },
+    "ANS": { "type": "choice", "values": ["(y-1)/y","(6y-7)/6y","(7y-9)/7y","(y-1)/y","(9y-7)/9y","(5y-4)/5y"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "58.г Сложение и вычитание дробей (с полным сокращением)",
+  "question_template": "Выполните действие:<br>\\( \\frac{{{E}p-{F}q}}{{{G}p}} - \\frac{{{H}p+{J}q}}{{{G}p}} + \\frac{p-{K}q}{{{G}p}} \\)<br><i>Ответ в виде дроби</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "E": { "type": "choice", "values": [3, 4, 5, 6, 7, 8] },
+    "F": { "type": "choice", "values": [1, 2, 3, 2, 4, 5] },
+    "G": { "type": "choice", "values": [5, 6, 7, 8, 9, 10] },
+    "H": { "type": "choice", "values": [2, 3, 5, 5, 3, 6] },
+    "J": { "type": "choice", "values": [6, 5, 4, 2, 3, 4] },
+    "K": { "type": "choice", "values": [4, 1, 2, 3, 2, 1] },
+    "ANS": { "type": "choice", "values": ["(2p-11q)/5p","(p-4q)/3p","(4p-9q)/7p","(2p-3q)/4p","(5p-9q)/9p","(3p-10q)/10p"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "58.д Сложение и вычитание дробей с одинаковым знаменателем",
+  "question_template": "Выполните действие:<br>\\( \\frac{{{A}c-{B}d}}{{{M}c}} - \\frac{{{N}d}}{{{M}c}} + \\frac{d-{K}c}{{{M}c}} \\)<br><i>Ответ в виде дроби</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "A": { "type": "choice", "values": [5, 6, 7, 8, 9, 10] },
+    "B": { "type": "choice", "values": [2, 3, 4, 5, 5, 3] },
+    "M": { "type": "choice", "values": [4, 5, 6, 7, 8, 9] },
+    "N": { "type": "choice", "values": [3, 2, 5, 4, 2, 6] },
+    "K": { "type": "choice", "values": [5, 4, 3, 6, 7, 8] },
+    "ANS": { "type": "choice", "values": ["-d/c","(2c-4d)/5c","(2c-4d)/3c","(2c-5d)/7c","(c-3d)/4c","(2c-8d)/9c"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "58.е Сложение и вычитание дробей с одинаковым знаменателем",
+  "question_template": "Выполните действие:<br>\\( \\frac{{P}a}{b} - \\frac{{Q}-{R}a}{b} + \\frac{{S}-{T}a}{b} \\)<br><i>Ответ в виде дроби</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "P": { "type": "choice", "values": [2, 3, 4, 5, 6, 7] },
+    "Q": { "type": "choice", "values": [1, 2, 3, 4, 5, 6] },
+    "R": { "type": "choice", "values": [6, 5, 4, 3, 2, 7] },
+    "S": { "type": "choice", "values": [13, 10, 8, 12, 15, 9] },
+    "T": { "type": "choice", "values": [8, 7, 6, 5, 9, 4] },
+    "ANS": { "type": "choice", "values": ["12/b","(a+8)/b","(2a+5)/b","(3a+8)/b","(10-a)/b","(10a+3)/b"] }
+  },
+  "conditions": ""
 }
+
+
 
 ]
