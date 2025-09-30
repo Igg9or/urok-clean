@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ lesson.title }} | Контрольная работа</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+      window.MathJax = {
+        tex: {inlineMath: [['\\(', '\\)'], ['$', '$']], displayMath: [['\\[', '\\]'], ['$$','$$']]}
+      };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="lesson-container">
+        <header class="lesson-header">
+            <div class="header-content">
+                <h1>{{ lesson.title }} (Контрольная)</h1>
+                <div class="lesson-meta">
+                    <span class="date">{{ lesson.date }}</span>
+                    <span class="teacher">Учитель: {{ lesson.teacher_name }}</span>
+                </div>
+            </div>
+            <a href="{{ url_for('student_lessons') }}" class="btn btn-back">← Назад к урокам</a>
+        </header>
+
+        <main class="lesson-content">
+            <div class="tasks-container">
+                {% for task in tasks %}
+                <div class="task-card"
+                    data-task-id="{{ task.id }}"
+                    data-user-id="{{ user_id }}"
+                    data-answer-type="{{ task.answer_type }}"
+                    data-params='{{ task.params|tojson|safe }}'>
+                    <div class="task-header">
+                        <div class="task-number">Задание {{ loop.index }}</div>
+                        <div class="task-status"></div>
+                    </div>
+                    <div class="task-body">
+                        <div class="task-question" data-question-raw='{{ task.question|tojson|safe }}'>
+                            {{ task.question|safe }}
+                        </div>
+                        <div class="task-answer">
+                            <input type="text" class="answer-input" placeholder="Введите ваш ответ">
+                            <button class="btn btn-check">Ответить</button>
+                        </div>
+                        <div class="task-feedback hidden">
+                            <div class="feedback-correct hidden">
+                                <span class="icon">✓</span>
+                                <span>Ответ сохранён</span>
+                            </div>
+                            <div class="feedback-incorrect hidden">
+                                <span class="icon">✗</span>
+                                <span>Ответ сохранён</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="lesson-progress">
+                <h3>Ваш прогресс</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+                <div class="progress-text">0 из {{ tasks|length }} заданий</div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/student_lesson.js') }}?v=6"></script>
+    <script>
+      // Блокировка после первого ответа
+      document.addEventListener('DOMContentLoaded', () => {
+          document.querySelectorAll('.task-card').forEach(card => {
+              const btn = card.querySelector('.btn-check');
+              const input = card.querySelector('.answer-input');
+              btn.addEventListener('click', () => {
+                  btn.disabled = true;
+                  input.disabled = true;
+              });
+          });
+      });
+    </script>
+</body>
+</html>

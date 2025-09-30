@@ -15,7 +15,8 @@ JSON_FILES = [
     "templates6.json",
     "templates7.json",
     "templates8.json",
-    "templates9.json"
+    "templates9.json",
+    "templates5_tetrad.json"
 ]
 
 conn = psycopg2.connect(
