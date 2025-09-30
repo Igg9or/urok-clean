@@ -1,5 +1,9 @@
 console.log('student_lesson.js v5 loaded');
 
+// Глобальные переменные для модального окна перерешивания
+let currentRetryTaskCard = null;
+let currentRetryTaskId = null;
+
 document.addEventListener('DOMContentLoaded', function() {
     // Загружаем сохраненные ответы при старте
     loadSavedAnswers();
@@ -10,6 +14,8 @@ document.addEventListener('DOMContentLoaded', function() {
             checkAnswer(this.closest('.task-card'));
         });
     });
+
+    initRetryModal();
 
     function extractQuestionForAI(taskCard) {
         const qNode = taskCard.querySelector('.task-question');
@@ -35,6 +41,225 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
 
+    
+            // Функция для показа кнопки "Решить еще раз"
+    function showRetryButton(taskCard) {
+        const retryButton = taskCard.querySelector('.btn-retry');
+        if (retryButton) {
+            retryButton.classList.remove('hidden');
+            
+            // Обработчик для кнопки "Решить еще раз"
+            retryButton.onclick = () => openRetryModal(taskCard);
+        }
+    }
+
+    // Функция открытия модального окна
+    async function openRetryModal(taskCard) {
+        currentRetryTaskCard = taskCard;
+        currentRetryTaskId = taskCard.dataset.taskId;
+        
+        const modal = document.getElementById('retryModal');
+        const content = modal.querySelector('.retry-task-content');
+        
+        // Показываем загрузку
+        content.innerHTML = '<div class="loading">Загрузка нового задания...</div>';
+        modal.classList.remove('hidden');
+        
+        try {
+            // Загружаем новое задание
+            await loadNewTaskVariant(taskCard, content);
+        } catch (error) {
+            console.error('Ошибка загрузки нового задания:', error);
+            content.innerHTML = '<div class="error">Ошибка загрузки задания</div>';
+        }
+    }
+
+    // Функция загрузки нового варианта задания
+    async function loadNewTaskVariant(taskCard, contentContainer) {
+        const taskId = taskCard.dataset.taskId;
+        const userId = taskCard.dataset.userId;
+        
+        console.log('Загрузка нового задания для taskId:', taskId);
+        
+        if (!taskId) {
+            contentContainer.innerHTML = '<div class="error">Ошибка: не найден ID задания</div>';
+            return;
+        }
+        
+        try {
+            const response = await fetch(`/api/generate_retry_task/${taskId}`);
+            console.log('Response status:', response.status);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const newTask = await response.json();
+            console.log('Получено новое задание:', newTask);
+            
+            if (newTask.error) {
+                throw new Error(newTask.error);
+            }
+            
+            // Нормализуем LaTeX в вопросе
+            const normalizedQuestion = normalizeLatexForRetry(newTask.question);
+            
+            // Отображаем новое задание с правильным форматированием LaTeX
+            contentContainer.innerHTML = `
+                <div class="retry-task">
+                    <div class="task-question" id="retry-question">${normalizedQuestion || 'Вопрос не сгенерирован'}</div>
+                    <div class="task-answer">
+                        <input type="text" class="retry-answer-input" placeholder="Введите ваш ответ">
+                    </div>
+                    <div class="retry-feedback hidden"></div>
+                    <input type="hidden" class="retry-correct-answer" value="${newTask.correct_answer || ''}">
+                    <input type="hidden" class="retry-answer-type" value="${taskCard.dataset.answerType || 'numeric'}">
+                </div>
+            `;
+            
+            // Применяем MathJax к новому контенту
+            if (window.MathJax && typeof MathJax.typesetPromise === 'function') {
+                try {
+                    await MathJax.typesetPromise([contentContainer]);
+                    console.log('MathJax applied to retry task');
+                } catch (mathError) {
+                    console.error('MathJax error:', mathError);
+                }
+            }
+            
+            // Добавляем обработчик для кнопки проверки в модалке
+            document.querySelector('.btn-check-retry').onclick = checkRetryAnswer;
+            
+        } catch (error) {
+            console.error('Ошибка загрузки нового задания:', error);
+            contentContainer.innerHTML = `
+                <div class="error">
+                    Ошибка загрузки задания: ${error.message}
+                    <br>Task ID: ${taskId}
+                </div>
+            `;
+        }
+    }
+
+    // Функция для нормализации LaTeX в модальном окне
+function normalizeLatexForRetry(text) {
+    if (!text) return text;
+    
+    let normalized = String(text);
+    
+    // Заменяем неправильные escape-последовательности
+    normalized = normalized.replace(/\\\\\(/g, '\\(').replace(/\\\\\)/g, '\\)');
+    normalized = normalized.replace(/\\\\\[/g, '\\[').replace(/\\\\\]/g, '\\]');
+    
+    // Исправляем распространенные проблемы с LaTeX
+    normalized = normalized.replace(/\\cdot/g, '\\cdot ');
+    normalized = normalized.replace(/\\times/g, '\\times ');
+    
+    return normalized;
+}
+
+    // Функция проверки ответа в модальном окне
+    async function checkRetryAnswer() {
+        const modal = document.getElementById('retryModal');
+        const input = modal.querySelector('.retry-answer-input');
+        const feedback = modal.querySelector('.retry-feedback');
+        const correctAnswer = modal.querySelector('.retry-correct-answer').value;
+        const answerType = modal.querySelector('.retry-answer-type').value;
+        const userAnswer = input.value.trim();
+        
+        if (!userAnswer) {
+            alert('Введите ответ!');
+            return;
+        }
+        
+        try {
+            const response = await fetch('/api/check_answer', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    answer: userAnswer,
+                    correct_answer: correctAnswer,
+                    answer_type: answerType
+                })
+            });
+            
+            const result = await response.json();
+            
+            if (result.is_correct) {
+                // Если правильно - засчитываем оригинальное задание как верное
+                feedback.innerHTML = '<div class="success">Правильно! Задание засчитано.</div>';
+                feedback.classList.remove('hidden');
+                
+                // Блокируем поле ввода
+                input.disabled = true;
+                document.querySelector('.btn-check-retry').disabled = true;
+                
+                // Сохраняем результат для оригинального задания
+                setTimeout(async () => {
+                    await saveAnswerToServer(currentRetryTaskId, userAnswer, true);
+                    
+                    // Обновляем интерфейс оригинального задания
+                    showResult(currentRetryTaskCard, true, userAnswer);
+                    currentRetryTaskCard.querySelector('.answer-input').disabled = true;
+                    currentRetryTaskCard.querySelector('.btn-check').disabled = true;
+                    currentRetryTaskCard.querySelector('.btn-retry').classList.add('hidden');
+                    
+                    // Закрываем модальное окно
+                    closeRetryModal();
+                }, 1500);
+                
+            } else {
+                // Если неправильно - показываем ошибку
+                feedback.innerHTML = `
+                    <div class="error">
+                        Неправильно! Правильный ответ: ${correctAnswer}
+                        <br>Больше нельзя перерешать это задание.
+                    </div>
+                `;
+                feedback.classList.remove('hidden');
+                
+                // Блокируем дальнейшие попытки
+                input.disabled = true;
+                document.querySelector('.btn-check-retry').disabled = true;
+                document.querySelector('.btn-cancel').textContent = 'Закрыть';
+                
+                // Сохраняем результат как неправильный
+                await saveAnswerToServer(currentRetryTaskId, userAnswer, false);
+            }
+            
+        } catch (error) {
+            console.error('Ошибка проверки:', error);
+            feedback.innerHTML = '<div class="error">Ошибка проверки ответа</div>';
+            feedback.classList.remove('hidden');
+        }
+    }
+
+    // Функция закрытия модального окна
+    function closeRetryModal() {
+        const modal = document.getElementById('retryModal');
+        modal.classList.add('hidden');
+        currentRetryTaskCard = null;
+        currentRetryTaskId = null;
+    }
+
+    // Инициализация модального окна
+    function initRetryModal() {
+        const modal = document.getElementById('retryModal');
+        
+        // Закрытие по кнопке X
+        modal.querySelector('.btn-close').onclick = closeRetryModal;
+        
+        // Закрытие по кнопке Отмена
+        modal.querySelector('.btn-cancel').onclick = closeRetryModal;
+        
+        // Закрытие по клику вне модального окна
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeRetryModal();
+            }
+        });
+    }
+    
     // Функция загрузки сохраненных ответов
     async function loadSavedAnswers() {
         const lessonId = window.location.pathname.split('/').pop();
@@ -177,9 +402,7 @@ userAnswer = userAnswer.replace(/([0-9]*\.?[0-9]*|)\s*√\s*(\(?[a-zA-Z0-9+*/\s-
             correctFeedback.classList.add('hidden');
             incorrectFeedback.classList.remove('hidden');
             status.style.backgroundColor = 'var(--error-color)';
-            // Запуск ИИ-диалога при ошибке:
-            startAIStepDialog(taskCard);
-
+            
             // Изменяем текст для первой/второй попытки
             if (taskCard.attempts === 1) {
                 incorrectFeedback.querySelector('.error-message').innerHTML = "Ответ неверный. Попробуй еще раз!";
@@ -187,7 +410,11 @@ userAnswer = userAnswer.replace(/([0-9]*\.?[0-9]*|)\s*√\s*(\(?[a-zA-Z0-9+*/\s-
                 incorrectFeedback.querySelector('.error-message').innerHTML =
                     "Ответ неверный. Правильный ответ: <span class='correct-answer'>" +
                     taskCard.dataset.correctAnswer +
-                    "</span><br><div class='ai-solution'>Загрузка решения...</div>";
+                    "</span>";
+                
+                // ПОКАЗЫВАЕМ КНОПКУ "РЕШИТЬ ЕЩЕ РАЗ" после второй ошибки
+                showRetryButton(taskCard);
+                
                 fetchAISolution(taskCard);
             }
         }
