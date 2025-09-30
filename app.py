@@ -2223,150 +2223,82 @@ def infer_student_mark(user_id: int) -> int:
 
 @app.route('/api/generate_retry_task/<int:task_id>')
 def generate_retry_task(task_id):
-    print(f"=== DEBUG: generate_retry_task called with task_id: {task_id} ===")
-    
     if 'user_id' not in session:
         return jsonify({'error': 'Unauthorized'}), 401
-    
+
+    user_id = session['user_id']
     conn = get_db()
     try:
         cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        
-        print(f"DEBUG: Generating retry task for task_id: {task_id}")
-        
-        # Получаем информацию о задании
+
+        # --- Проверка: есть ли уже retry-вариант ---
+        cursor.execute('''
+            SELECT variant_data FROM student_task_variants
+            WHERE lesson_id = (
+                SELECT lesson_id FROM lesson_tasks WHERE id = %s
+            )
+            AND user_id = %s
+            AND task_id = %s
+            AND variant_type = 'retry'
+        ''', (task_id, user_id, task_id))
+        retry_variant = cursor.fetchone()
+
+        if retry_variant:
+            data = retry_variant['variant_data']
+            if isinstance(data, str):
+                data = json.loads(data)
+            return jsonify(data)
+
+        # --- Если нет, генерируем новый ---
         cursor.execute('''
             SELECT lt.*, tt.question_template, tt.answer_template, tt.parameters, tt.conditions, tt.answer_type
             FROM lesson_tasks lt
             LEFT JOIN task_templates tt ON lt.template_id = tt.id
             WHERE lt.id = %s
         ''', (task_id,))
-        
         task = cursor.fetchone()
         if not task:
-            print(f"DEBUG: Task {task_id} not found in database")
             return jsonify({'error': 'Task not found'}), 404
-        
-        print(f"DEBUG: Found task {task_id}, template_id: {task['template_id']}")
-        
-        # Если есть шаблон - генерируем новый вариант
-        if task['template_id']:
-            # Обрабатываем parameters - может быть строкой или уже словарем
-            params = task['parameters']
-            print(f"DEBUG: Parameters type: {type(params)}, value: {params}")
-            
-            if params is None:
+
+        params = task['parameters']
+        if isinstance(params, str):
+            try:
+                params = json.loads(params)
+            except:
                 params = {}
-            elif isinstance(params, str):
-                try:
-                    params = json.loads(params)
-                except Exception as e:
-                    print(f"DEBUG: JSON parse error: {e}")
-                    params = {}
-            elif isinstance(params, dict):
-                # Уже словарь - оставляем как есть
-                pass
-            else:
-                print(f"DEBUG: Unknown parameters type: {type(params)}")
-                params = {}
-            
-            # Используем шаблон из task_templates, если он есть, иначе из lesson_tasks
-            question_template = task['question_template'] if task['question_template'] else task['question']
-            answer_template = task['answer_template'] if task['answer_template'] else task['answer']
-            
-            template_dict = {
-                'id': task['template_id'],
-                'question_template': question_template,
-                'answer_template': answer_template,
-                'parameters': params,
-                'conditions': task['conditions'] or '',
-                'answer_type': task['answer_type'] or 'numeric'
-            }
-            
-            print(f"DEBUG: Template dict prepared")
-            
-            # Генерируем вариант для перерешивания - ПРИНУДИТЕЛЬНО меняем параметры
-            user_id = session['user_id']
-            student_mark = infer_student_mark(user_id)
-            print(f"DEBUG: Student mark: {student_mark}")
-            
-            # Пробуем разные уровни сложности чтобы получить ДРУГОЙ набор параметров
-            bands_to_try = [
-                student_mark + 1,  # следующий уровень
-                student_mark - 1,  # предыдущий уровень  
-                random.choice([2, 3, 4, 5]),  # случайный уровень
-                student_mark  # оригинальный уровень (последний шанс)
-            ]
-            
-            # Убираем дубликаты и выходим за пределы 2-5
-            bands_to_try = [max(2, min(5, band)) for band in bands_to_try]
-            bands_to_try = list(dict.fromkeys(bands_to_try))  # удаляем дубликаты
-            
-            print(f"DEBUG: Trying bands: {bands_to_try}")
-            
-            variant = None
-            last_question = None
-            
-            for retry_band in bands_to_try:
-                temp_variant = TaskGenerator.generate_task_variant(template_dict, band=retry_band)
-                if temp_variant and temp_variant.get('question') and temp_variant.get('question') != template_dict['question_template']:
-                    # Проверяем что это действительно ДРУГОЕ задание (другие числа)
-                    if temp_variant.get('question') != last_question:
-                        variant = temp_variant
-                        last_question = temp_variant.get('question')
-                        print(f"DEBUG: Success with band {retry_band}, question: {variant.get('question')[:50]}...")
-                        break
-            
-            # Если все равно не получилось разные задания, используем последний сгенерированный
-            if not variant:
-                variant = TaskGenerator.generate_task_variant(template_dict, band=student_mark)
-                print(f"DEBUG: Using fallback variant")
-            
-            print(f"DEBUG: Final variant: {variant}")
-            
-            if variant:
-                return jsonify(variant)
-            else:
-                # Fallback - возвращаем оригинальное задание
-                return jsonify({
-                    'question': task['question'],
-                    'correct_answer': task['answer'],
-                    'params': {},
-                    'template_id': task['template_id']
-                })
-                
-        else:
-            print(f"DEBUG: No template_id for task {task_id}")
-            # Если нет шаблона, возвращаем оригинальное задание
-            return jsonify({
-                'question': task['question'],
-                'correct_answer': task['answer'],
-                'params': {},
-                'template_id': None
-            })
-            
+        elif not isinstance(params, dict):
+            params = {}
+
+        template_dict = {
+            'id': task['template_id'],
+            'question_template': task['question_template'] or task['question'],
+            'answer_template': task['answer_template'] or task['answer'],
+            'parameters': params,
+            'conditions': task['conditions'] or '',
+            'answer_type': task['answer_type'] or 'numeric'
+        }
+
+        variant = TaskGenerator.generate_task_variant(template_dict, band=None)
+
+        # --- Сохраняем как retry-вариант ---
+        cursor.execute('''
+            INSERT INTO student_task_variants
+            (lesson_id, user_id, task_id, variant_data, variant_type)
+            VALUES (%s, %s, %s, %s, 'retry')
+            ON CONFLICT (lesson_id, user_id, task_id, variant_type)
+            DO UPDATE SET variant_data = EXCLUDED.variant_data
+        ''', (task['lesson_id'], user_id, task_id, json.dumps(variant)))
+
+        conn.commit()
+        return jsonify(variant)
+
     except Exception as e:
         print(f"ERROR generating retry task: {e}")
-        import traceback
-        traceback.print_exc()
-        
-        # Fallback на случай любой ошибки
-        try:
-            cursor.execute('SELECT question, answer FROM lesson_tasks WHERE id = %s', (task_id,))
-            task_fallback = cursor.fetchone()
-            if task_fallback:
-                return jsonify({
-                    'question': task_fallback['question'],
-                    'correct_answer': task_fallback['answer'],
-                    'params': {},
-                    'error': f'Fallback due to: {str(e)}'
-                })
-        except:
-            pass
-            
         return jsonify({'error': str(e)}), 500
     finally:
         conn.close()
+
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True, use_reloader=False)
