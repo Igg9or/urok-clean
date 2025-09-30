@@ -2188,21 +2188,28 @@ def dispute_answer():
 
 def infer_student_mark(user_id: int) -> int:
     """
-    Грубая авто-оценка 2..5 по доле правильных ответов за всё время.
-    <25% → 2; 25–50% → 3; 50–75% → 4; ≥75% → 5.
-    Если истории нет — вернём 3 (средний).
+    Сначала пробуем явную оценку из users.grade (2..5).
+    Если её нет — оцениваем по истории ответов.
     """
     conn = get_db()
     try:
-        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        cursor.execute("""
+        cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+        # 1. Проверяем поле grade у пользователя
+        cur.execute("SELECT grade FROM users WHERE id = %s", (user_id,))
+        row = cur.fetchone()
+        if row and row["grade"] in (2, 3, 4, 5):
+            return int(row["grade"])
+
+        # 2. Если grade не задано — fallback на статистику
+        cur.execute("""
             SELECT 
                 COUNT(*) AS total,
                 SUM(CASE WHEN is_correct THEN 1 ELSE 0 END) AS correct
             FROM student_answers
             WHERE user_id = %s
         """, (user_id,))
-        row = cursor.fetchone()
+        row = cur.fetchone()
         total = row['total'] or 0
         correct = row['correct'] or 0
         if total == 0:
