@@ -2285,8 +2285,8 @@ def generate_retry_task(task_id):
             INSERT INTO student_task_variants
             (lesson_id, user_id, task_id, variant_data, variant_type)
             VALUES (%s, %s, %s, %s, 'retry')
-            ON CONFLICT (lesson_id, user_id, task_id, variant_type)
-            DO UPDATE SET variant_data = EXCLUDED.variant_data
+            ON CONFLICT (lesson_id, user_id, task_id)
+DO UPDATE SET variant_data = EXCLUDED.variant_data
         ''', (task['lesson_id'], user_id, task_id, json.dumps(variant)))
 
         conn.commit()
