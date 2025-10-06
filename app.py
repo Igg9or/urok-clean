@@ -853,10 +853,22 @@ def start_lesson(lesson_id):
                 })
         
         conn.commit()
+
+        cursor.execute("""
+            SELECT c.grade
+            FROM users u
+            JOIN classes c ON u.class_id = c.id
+            WHERE u.id = %s
+        """, (user_id,))
+        grade_row = cursor.fetchone()
+        student_grade = grade_row['grade'] if grade_row else None
+
         return render_template('student_lesson.html',
                             lesson=dict(lesson),
                             tasks=tasks,
-                            user_id=user_id)
+                            user_id=user_id,
+                            student_grade=student_grade
+                            )
         
     except Exception as e:
         conn.rollback()
@@ -1833,6 +1845,7 @@ def float_to_fraction(val, max_denominator=1000):
     return f"{frac.numerator}/{frac.denominator}"
                 
 
+
 @app.route('/api/generate_homework/<int:lesson_id>/<int:student_id>', methods=['POST'])
 def generate_homework(lesson_id, student_id):
     conn = get_db()
@@ -1851,12 +1864,21 @@ def generate_homework(lesson_id, student_id):
     if not rows:
         return jsonify({'error': 'Нет ответов'}), 404
 
+    # ← НОВОЕ: узнаём номер класса урока
+    cursor.execute("""
+        SELECT c.grade
+        FROM lessons l
+        JOIN classes c ON l.class_id = c.id
+        WHERE l.id = %s
+    """, (lesson_id,))
+    g = cursor.fetchone()
+    grade = g['grade'] if g else "неизвестный"
+
     wrong_data = ""
     for row in rows:
         if not row['is_correct']:
-            # Восстанавливаем сгенерированный вопрос для этого ученика
             variant = json.loads(row['variant_data']) if row['variant_data'] else {}
-            question = variant.get('generated_question', row['question'])  # если нет, то fallback на шаблон
+            question = variant.get('generated_question', row['question'])
             answer = row['answer']
             correct_answer = variant.get('computed_answer', 'неизвестно')
             wrong_data += f"{question} = {answer} ❌ (нужно: {correct_answer})\n"
@@ -1864,10 +1886,12 @@ def generate_homework(lesson_id, student_id):
     if not wrong_data:
         return jsonify({'text': 'Ученик не допустил ошибок. ДЗ не требуется.'})
 
-    # Новый синтаксис OpenAI API
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
+    # ← ПРОМПТ тот же, только добавлена одна строка с классом
     prompt = rf"""
+Это ученик {grade} класса (российская школа). Объясняй на уровне этого класса.
+
 Ученик сделал ошибки:
 
 {wrong_data}
@@ -1880,7 +1904,7 @@ def generate_homework(lesson_id, student_id):
     - Покажи саму задачу и ответ ученика
     - Объясни, в чём ошибка (на понятном языке). И разбери ошибку подробно, по шагам. 
     - Разбери аналогичный пример с пошаговым объяснением (без использования LaTeX)
-    - Дай 1 новое похожих задания без решения
+    - Дай 1 новое похожее задание без решения
 
 3. Заверши поддержкой и мотивацией (например: "У тебя точно получится!").
 
@@ -1895,7 +1919,6 @@ def generate_homework(lesson_id, student_id):
 
     content = chat_response.choices[0].message.content
 
-    # Генерация PDF
     rendered = render_template("homework_template.html", content=content)
     filepath = f"homeworks/homework_{lesson_id}_{student_id}.pdf"
     os.makedirs("homeworks", exist_ok=True)
@@ -2138,7 +2161,10 @@ def ai_full_solution():
     # user_id можно использовать для логов, если надо
 
     prompt = f"""
-    Ты — доброжелательный репетитор по математике. Дай полный подробный разбор решения задачи для ученика:
+    Ты — опытный учитель математики в российской школе.
+Ты объясняешь материал в духе школьных учебников и методических пособий Минпросвещения РФ, но без заумных определений. Чтобы ученик все понял.
+Ученик из {grade} класса. Дай понятное, пошаговое решение задачи, с объяснениями, подходящими для уровня ученика этого класса.
+Задача:
     "{question}"
     Дай пошаговое объяснение, чтобы ученик понял ход рассуждений. 
     В конце обязательно укажи правильный ответ

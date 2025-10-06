@@ -350,15 +350,17 @@ userAnswer = userAnswer.replace(/([0-9]*\.?[0-9]*|)\s*√\s*(\(?[a-zA-Z0-9+*/\s-
     taskCard.querySelector('.btn-check').disabled = true;
     await saveAnswerToServer(taskId, userAnswer, true);
 
-} else if (taskCard.attempts >= 2) {
-    // Если 2 ошибки — блокируем, сохраняем и показываем правильный ответ
+} else if (taskCard.attempts >= 1) {
+    // Если 1 ошибка — блокируем, сохраняем и показываем правильный ответ
     taskCard.querySelector('.answer-input').disabled = true;
     taskCard.querySelector('.btn-check').disabled = true;
     await saveAnswerToServer(taskId, userAnswer, false);
     taskCard.querySelector('.btn-dispute')?.classList.remove('hidden');
+    showRetryButton(taskCard);       // показать "Решить еще раз"
+    fetchAISolution(taskCard);       // показать полное решение от ИИ
 
 } else {
-    // Это первая ошибка — не блокируем, не сохраняем
+    // Это первая попытка (и если она неправильная — будет последняя)
     taskCard.attempts += 1;
 
     // Автоматическая проверка по символам
@@ -376,10 +378,16 @@ userAnswer = userAnswer.replace(/([0-9]*\.?[0-9]*|)\s*√\s*(\(?[a-zA-Z0-9+*/\s-
         return;
     }
 
-    // Если не совпадает — остаёмся на первой ошибке
+    // Если не совпадает — сразу считаем ошибкой (одна попытка)
     taskCard.querySelector('.task-feedback .feedback-incorrect').classList.remove('hidden');
     taskCard.querySelector('.task-feedback .feedback-correct').classList.add('hidden');
+    await saveAnswerToServer(taskId, userAnswer, false);
+    showRetryButton(taskCard);
+    fetchAISolution(taskCard);
+    taskCard.querySelector('.answer-input').disabled = true;
+    taskCard.querySelector('.btn-check').disabled = true;
 }
+
 
         } catch (error) {
             console.error('Error:', error);
@@ -528,6 +536,7 @@ userAnswer = userAnswer.replace(/([0-9]*\.?[0-9]*|)\s*√\s*(\(?[a-zA-Z0-9+*/\s-
   // Контейнер решения внутри карточки
   const feedbackBlock = taskCard.querySelector('.task-feedback') || taskCard;
   let solutionNode = feedbackBlock.querySelector('.ai-solution');
+  const grade = taskCard.dataset.grade || "неизвестно";
   if (!solutionNode) {
     solutionNode = document.createElement('div');
     solutionNode.className = 'ai-solution';
@@ -602,6 +611,7 @@ const questionText = extractQuestionForAI(taskCard);
         task_id: taskId,
         question: questionText,
         correct_answer: correctAnswer,
+        grade: grade,
         user_id: userId
       })
     });

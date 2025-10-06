@@ -39,6 +39,7 @@
                     data-correct-answer="{{ task.correct_answer }}"
                     data-answer-type="{{ task.answer_type }}"
                     data-template-id="{{ task.template_id }}"
+                    data-grade="{{ student_grade }}"
                     data-params='{{ task.params|tojson|safe }}'>
                     <div class="task-header">
                         <div class="task-number">Задание {{ loop.index }}</div>
