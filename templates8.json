@@ -2913,8 +2913,286 @@
     "ANS": { "type": "choice", "values": ["12/b","(a+8)/b","(2a+5)/b","(3a+8)/b","(10-a)/b","(10a+3)/b"] }
   },
   "conditions": ""
-}
+},
+{
+  "textbook_id": 6,
+  "name": "75а Сложение дробей с сокращением",
+  "question_template": "Вычислите и запишите ответ в сокращённом виде:<br>\\( \\tfrac{x}{{{a}}} + \\tfrac{y}{{{b}}} \\)",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "a": { "type": "choice", "values": [2, 4, 5, 3, 3, 7, 5, 8, 9, 10, 11, 3] },
+    "b": { "type": "choice", "values": [3, 6, 7, 8, 10, 9, 15, 12, 6, 4, 2, 5] },
+    "ANS": { "type": "choice", "values": ["(3x+2y)/6", "(3x+2y)/12", "(7x+5y)/35", "(8x+3y)/24", "(5x+3y)/30", "(9x+7y)/63", "(3x+y)/15", "(2x+3y)/24", "(2x+3y)/18", "(2x+5y)/20", "(2x+11y)/22", "(5x+3y)/15"] }
+  },
+  "conditions": "Запишите ответ в виде дроби с числителем в скобках. Например: (2x+3y)/5"
+},
+{
+  "textbook_id": 6,
+  "name": "75.б Разность дробей c/a - d/b",
+  "question_template": "Вычислите и запишите результат в виде дроби:<br>\\( \\tfrac{c}{a} - \\tfrac{d}{b} \\)",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "a": { "type": "choice", "values": [4, 6, 3, 5, 7, 8, 9, 10, 2, 12, 3, 6] },
+    "b": { "type": "choice", "values": [12, 9, 5, 15, 14, 24, 6, 4, 8, 18, 6, 10] },
+    "c": { "type": "static", "values": ["c"] },
+    "d": { "type": "static", "values": ["d"] },
+    "ANS": { "type": "choice", "values": ["(3c-2d)/12", "(3c-2d)/18", "(2c-d)/15", "(3c-d)/15", "(2c-d)/14", "(3c-d)/24", "(2c-3d)/18", "(2c-5d)/20", "(4c-d)/8", "(3c-2d)/36", "(2c-d)/6", "(5c-3d)/30"] }
+  },
+  "conditions": ""
+},
 
+
+{
+  "textbook_id": 6,
+  "name": "75.в Разность дробей a/b - b²/a",
+  "question_template": "Вычислите и запишите результат в виде дроби:<br>\\( \\tfrac{a}{b} - \\tfrac{b^2}{a} \\)",
+  "answer_template": "(a^2 - b^3)/ab",
+  "answer_type": "string",
+  "parameters": {
+    "a": { "type": "static", "values": ["a"] },
+    "b": { "type": "static", "values": ["b"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "75.г Разность дробей m/(2x) - n/(3x)",
+  "question_template": "Вычислите и запишите результат в виде дроби:<br>\\( \\tfrac{m}{2x} - \\tfrac{n}{3x} \\)",
+  "answer_template": "(3m-2n)/6x",
+  "answer_type": "string",
+  "parameters": {
+    "m": { "type": "static", "values": ["m"] },
+    "n": { "type": "static", "values": ["n"] },
+    "x": { "type": "static", "values": ["x"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "75.д Сложение дробей",
+  "question_template": "Упростите выражение:<br>\\( \\tfrac{m x}{8y} + \\tfrac{x}{4y} \\)<br><i>Ответ запишите в виде одной дроби</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "m": { "type": "choice", "values": [5, 6, 4, 2, 1, 3, 8, 0, 10, 12, 9, 7] },
+    "ANS": { "type": "choice", "values": ["7x/8y", "x/y", "3x/4y", "x/2y", "3x/8y", "5x/8y", "5x/4y", "x/4y", "3x/2y", "7x/4y", "11x/8y", "9x/8y"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "75.е Разность дробей",
+  "question_template": "Вычислите и запишите результат в сокращённом виде:<br>\\( \\frac{{{a}y}}{{24c}} - \\frac{{{b}y}}{{36c}} \\)",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "a": { "type": "choice", "values": [17, 20, 15, 22, 16, 21, 19, 18, 12, 30, 36, 9] },
+    "b": { "type": "choice", "values": [25, 24, 18, 28, 18, 27, 22, 21, 10, 45, 54, 12] },
+    "ANS": { "type": "choice", "values": ["y/72c", "y/6c", "y/8c", "5y/36c", "3y/6c", "13y/72c", "2y/9c", "5y/12c", "3y/18c"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "75з Сложение дробей",
+  "question_template": "Выполните сложение дробей:<br>\\( \\frac{{m1b}}{{n1c}} + \\frac{{m2c}}{{n2b}} \\)<br><i>Ответ запишите в виде одной дроби.</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "m1": { "type": "choice", "values": [2, 5, 4, 6, 3, 7, 3, 9, 1, 2] },
+    "n1": { "type": "choice", "values": [3, 6, 5, 7, 8, 9, 4, 10, 2, 5] },
+    "m2": { "type": "choice", "values": [1, 2, 1, 1, 3, 1, 2, 2, 1, 1] },
+    "n2": { "type": "choice", "values": [5, 3, 2, 6, 8, 3, 5, 5, 6, 5] },
+    "ANS": { "type": "choice", "values": [
+      "(2b^2+3c^2)/3bc",
+      "(15b^2+12c^2)/18bc",
+      "(8b^2+5c^2)/10bc",
+      "(6b^2+7c^2)/7bc",
+      "(9b^2+12c^2)/16bc",
+      "(21b^2+9c^2)/27bc",
+      "(3b^2+2c^2)/4bc",
+      "(45b^2+10c^2)/50bc",
+      "(b^2+2c^2)/2bc",
+      "(2b^2+5c^2)/5bc"
+    ] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "76.а Сложение дробей с разными знаменателями",
+  "question_template": "Выполните действие:<br>\\( \\frac{{A}y-{P}}{{M}y} + \\frac{y+{Q}}{{N}y} \\)<br><i>Ответ в виде дроби</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "algebraic",
+  "parameters": {
+    "A": { "type": "choice", "values": [5, 3, 4, 2] },
+    "P": { "type": "choice", "values": [3, 2, 5, 1] },
+    "M": { "type": "choice", "values": [6, 4, 8, 3] },
+    "Q": { "type": "choice", "values": [2, 1, 3, 4] },
+    "N": { "type": "choice", "values": [4, 6, 12, 9] },
+    "ANS": { "type": "choice", "values": [
+      "13/12",
+      "(11y-4)/12y",
+      "(14y-9)/24y",
+      "(7y+1)/9y"
+    ] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "76.в Вычитание дробей с разными знаменателями",
+  "question_template": "Выполните действие:<br>\\( \\frac{b+{P}}{{M}b} - \\frac{{Q}c-{R}}{{N}c} \\)<br><i>Ответ в виде дроби (максимально сокращённый)</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "algebraic",
+  "parameters": {
+    "P": { "type": "choice", "values": [4, 3, 1, 5] },
+    "M": { "type": "choice", "values": [10, 12, 9, 15] },
+    "Q": { "type": "choice", "values": [3, 2, 3, 2] },
+    "R": { "type": "choice", "values": [5, 4, 2, 7] },
+    "N": { "type": "choice", "values": [30, 24, 27, 30] },
+    "ANS": { "type": "choice", "values": [
+      "(5b+12c)/30bc",
+      "(2b+3c)/12bc",
+      "(2b+3c)/27bc",
+      "(7b+10c)/30bc"
+    ] }
+  },
+  "conditions": ""
+},
+
+{
+  "textbook_id": 6,
+  "name": "76.г Вычитание дробей с разными знаменателями",
+  "question_template": "Выполните действие:<br>\\( \\frac{{P}b+y}{{M}b} - \\frac{{Q}y+b}{{N}y} \\)<br><i>Ответ в виде дроби (максимально сокращённый)</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "P": { "type": "choice", "values": [8, 6, 10, 4] },
+    "M": { "type": "choice", "values": [40, 30, 50, 20] },
+    "Q": { "type": "choice", "values": [6, 4, 3, 5] },
+    "N": { "type": "choice", "values": [30, 20, 15, 25] },
+    "ANS": { "type": "choice", "values": [
+      "(3y^2-4b^2)/120by",
+      "(2y^2-3b^2)/60by",
+      "(3y^2-10b^2)/150by",
+      "(5y^2-4b^2)/100by"
+    ] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "77.а Вычитание дробей с разными знаменателями",
+  "question_template": "Выполните действие:<br>\\( \\frac{{P}a-b}{{M}a} - \\frac{a-{Q}b}{{N}a} \\)<br><i>Ответ в виде дроби (максимально сокращённый)</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "algebraic",
+  "parameters": {
+    "P": { "type": "choice", "values": [15, 10, 12, 9, 8] },
+    "M": { "type": "choice", "values": [12, 8, 9, 6, 10] },
+    "Q": { "type": "choice", "values": [4, 3, 5, 2, 3] },
+    "N": { "type": "choice", "values": [9, 6, 12, 4, 5] },
+    "ANS": { "type": "choice", "values": [
+      "(41a+13b)/36a",
+      "(26a+9b)/24a",
+      "(45a+11b)/36a",
+      "(15a+4b)/12a",
+      "(6a+5b)/10a"
+    ] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "77.б Вычитание дробей с разными знаменателями",
+  "question_template": "Выполните действие:<br>\\( \\frac{{{A}x+{P}}}{{{M}y}} - \\frac{{{B}x-{Q}}}{{{N}y}} \\)<br><i>Ответ в виде дроби (максимально сокращённый)</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "algebraic",
+  "parameters": {
+    "A": { "type": "choice", "values": [7, 5, 9, 4] },
+    "P": { "type": "choice", "values": [4, 3, 2, 5] },
+    "M": { "type": "choice", "values": [8, 6, 12, 10] },
+    "B": { "type": "choice", "values": [3, 2, 5, 3] },
+    "Q": { "type": "choice", "values": [1, 5, 4, 2] },
+    "N": { "type": "choice", "values": [6, 4, 8, 5] },
+    "ANS": { "type": "choice", "values": ["(9x+16)/24y","(4x+21)/12y","(3x+16)/24y","(-2x+9)/10y"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "78.а Вычитание дробей с приведением к общему знаменателю",
+  "question_template": "Выполните действие:<br>\\( \\frac{p}{a^2} - \\frac{1}{a} \\)<br><i>Ответ в виде дроби</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "algebraic",
+  "parameters": {
+    "p": { "type": "choice", "values": [3,4,5,6,7,8,9,10,11,12,13,14] },
+    "ANS": { "type": "choice", "values": [
+      "(3-a)/a^2","(4-a)/a^2","(5-a)/a^2","(6-a)/a^2","(7-a)/a^2","(8-a)/a^2",
+      "(9-a)/a^2","(10-a)/a^2","(11-a)/a^2","(12-a)/a^2","(13-a)/a^2","(14-a)/a^2"
+    ] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "78.б Сложение дробей с приведением к общему знаменателю",
+  "question_template": "Выполните действие:<br>\\( \\frac{p-x}{x^3} + \\frac{1}{x^2} \\)<br><i>Ответ в виде дроби</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "algebraic",
+  "parameters": {
+    "p": { "type": "choice", "values": [1,2,3,4,5,6,7,8,9,10,11,12] },
+    "ANS": { "type": "choice", "values": [
+      "1/x^3","2/x^3","3/x^3","4/x^3","5/x^3","6/x^3",
+      "7/x^3","8/x^3","9/x^3","10/x^3","11/x^3","12/x^3"
+    ] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "78.в Сложение дробей с разными знаменателями",
+  "question_template": "Выполните действие:<br>\\( \\frac{1}{k a^{r}} + \\frac{p-q a^3}{a^{t}} \\)<br><i>Ответ в виде дроби</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "algebraic",
+  "parameters": {
+    "k": { "type": "choice", "values": [2, 3, 4, 5] },
+    "p": { "type": "choice", "values": [4, 6, 5, 7] },
+    "q": { "type": "choice", "values": [2, 1, 3, 2] },
+    "r": { "type": "choice", "values": [7, 5, 6, 4] },
+    "t": { "type": "choice", "values": [10, 8, 9, 7] },
+    "ANS": { "type": "choice", "values": [
+      "(8-3a^3)/2a^10",
+      "(18-2a^3)/3a^8",
+      "(20-11a^3)/4a^9",
+      "(35-9a^3)/5a^7"
+    ] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "79.а Вычитание дробей с разными знаменателями",
+  "question_template": "Выполните действие:<br>\\( \\frac{{A}xy-{P}}{{M}x^3} - \\frac{{Q}y-x}{{N}x^2} \\)<br><i>Ответ в виде дроби (максимально сокращённый)</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "algebraic",
+  "parameters": {
+    "A": { "type": "choice", "values": [1, 3, 2, 3] },
+    "P": { "type": "choice", "values": [2, 1, 5, 2] },
+    "M": { "type": "choice", "values": [5, 6, 8, 9] },
+    "Q": { "type": "choice", "values": [2, 2, 3, 1] },
+    "N": { "type": "choice", "values": [10, 4, 12, 3] },
+    "ANS": { "type": "choice", "values": [
+      "(x^2-4)/10x^3",
+      "(3x^2-2)/12x^3",
+      "(2x^2-15)/24x^3",
+      "(3x^2-2)/9x^3"
+    ] }
+  },
+  "conditions": ""
+}
 
 
 ]

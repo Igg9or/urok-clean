@@ -3507,7 +3507,60 @@
     "ANS": { "type": "choice", "values": [2.8, 3, 4, 2, 2, 3, 2, 3, 0, 3, 3, 2] }
   },
   "conditions": ""
+},
+{
+  "textbook_id": 5,
+  "name": "114а Упрощение выражений",
+  "question_template": "Упростите выражение:<br>{expr_a}",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "expr_a": { "type": "choice", "values": ["5a+27a−a", "10a+3a−4a", "7a+2a−10a", "8a+6a−4a", "12a+18a−15a", "9a+11a−20a", "6a+3a−2a", "20a+1a−8a", "30a+14a−17a", "4a+5a−5a"] },
+    "ANS": { "type": "choice", "values": ["31a", "9a", "-1a", "10a", "15a", "0", "7a", "13a", "27a", "4a"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 5,
+  "name": "114б Упрощение выражений",
+  "question_template": "Упростите выражение:<br>{expr_b}",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "expr_b": { "type": "choice", "values": ["12b−17b−b", "20b−5b−4b", "8b−3b−10b", "6b−6b−6b", "14b−9b−1b", "30b−12b−6b", "18b−8b−8b", "9b−3b−3b", "25b−10b−15b", "4b−2b−1b"] },
+    "ANS": { "type": "choice", "values": ["-6b", "11b", "-5b", "-6b", "4b", "12b", "2b", "3b", "0", "1b"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 5,
+  "name": "114в Упрощение выражений",
+  "question_template": "Упростите выражение:<br>{expr_c}",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "expr_c": { "type": "choice", "values": ["6x−14−13x+26", "10x−5−2x+3", "15x+7−20x+5", "8x−8−8x+8", "9x−9−9x+9", "14x−6−3x+2", "20x+3−8x+9", "7x−2−5x+4", "5x−10−2x+6", "11x+5−6x+1"] },
+    "ANS": { "type": "choice", "values": ["-7x+12", "8x-2", "-5x+12", "0", "0", "11x-4", "12x+12", "2x+2", "3x-4", "5x+6"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 5,
+  "name": "114г Упрощение выражений",
+  "question_template": "Упростите выражение:<br>{expr_d}",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "expr_d": { "type": "choice", "values": ["-8−y+17−10y", "-5−2y+12−3y", "-3−y+10−y", "-6−4y+6−6y", "-10−y+10−y", "-7−5y+2−2y", "-4−3y+8−6y", "-2−y+3−y", "-1−y+1−y", "-9−y+5−y"] },
+    "ANS": { "type": "choice", "values": ["9−11y", "7−5y", "7−2y", "0−10y", "-2y", "-5−7y", "4−9y", "1−2y", "−2y", "-4−2y"] }
+  },
+  "conditions": ""
 }
+
+
+
+
+
 
 
 
