@@ -2339,12 +2339,362 @@
     "ANS": { "type": "choice", "values": [310, 325, 330, 318, 342, 315, 320, 337] }
   },
   "conditions": ""
+},
+{
+  "textbook_id": 8,
+  "name": "2.147а Найдите значение выражения c + 61 + 139",
+  "question_template": "Найдите значение выражения:<br>\\( c + 61 + 139 \\)<br>при c = {c}.<br><i>Ответ запишите числом</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "numeric",
+  "parameters": {
+    "c": { "type": "choice", "values": [110, 95, 87, 120, 140, 100, 75, 132] },
+    "ANS": { "type": "choice", "values": [310, 295, 287, 320, 340, 300, 275, 332] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 8,
+  "name": "2.147б Найдите значение выражения 32 + a + 68",
+  "question_template": "Найдите значение выражения:<br>\\( 32 + a + 68 \\)<br>при a = {a}.<br><i>Ответ запишите числом</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "numeric",
+  "parameters": {
+    "a": { "type": "choice", "values": [71, 60, 55, 84, 95, 73, 68, 80] },
+    "ANS": { "type": "choice", "values": [171, 160, 155, 184, 195, 173, 168, 180] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 8,
+  "name": "2.147в Найдите значение выражения 318 + x + 182",
+  "question_template": "Найдите значение выражения:<br>\\( 318 + x + 182 \\)<br>при x = {x}.<br><i>Ответ запишите числом</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "numeric",
+  "parameters": {
+    "x": { "type": "choice", "values": [59, 72, 80, 66, 91, 45, 50, 77] },
+    "ANS": { "type": "choice", "values": [559, 572, 580, 566, 591, 545, 550, 577] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 8,
+  "name": "2.147г Найдите значение выражения 451 + s + 359",
+  "question_template": "Найдите значение выражения:<br>\\( 451 + s + 359 \\)<br>при s = {s}.<br><i>Ответ запишите числом</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "numeric",
+  "parameters": {
+    "s": { "type": "choice", "values": [113, 100, 95, 120, 130, 85, 110, 125] },
+    "ANS": { "type": "choice", "values": [923, 910, 905, 930, 940, 895, 920, 935] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 8,
+  "name": "2.148а Упростите выражение 104 − (17 + a)",
+  "question_template": "Упростите выражение:<br>\\( 104 - (17 + a) \\)<br><i>Ответ запишите в виде выражения</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "ANS": { "type": "choice", "values": ["87 - a"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 8,
+  "name": "2.148б Упростите выражение a − 233 − 577",
+  "question_template": "Упростите выражение:<br>\\( a - 233 - 577 \\)<br><i>Ответ запишите в виде выражения</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "ANS": { "type": "choice", "values": ["a - 810"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 8,
+  "name": "2.149а Упростите выражение a − (b + c)",
+  "question_template": "Упростите выражение, используя свойства сложения и вычитания:<br>\\( a - (b + c) \\)<br>при a = {a}, b = {b}, c = {c}.<br><i>Ответ запишите в виде выражения</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "a": { "type": "choice", "values": [267, 315, 284, 300, 255, 298, 276, 289] },
+    "b": { "type": "choice", "values": ["x", "x", "x", "x", "x", "x", "x", "x"] },
+    "c": { "type": "choice", "values": [88, 92, 96, 87, 74, 99, 85, 90] },
+    "ANS": { "type": "choice", "values": ["179 - x", "223 - x", "188 - x", "213 - x", "181 - x", "199 - x", "191 - x", "199 - x"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 8,
+  "name": "2.149б Упростите выражение a − b − c",
+  "question_template": "Упростите выражение, используя свойства сложения и вычитания:<br>\\( a - b - c \\)<br>при a = {a}, b = {b}, c = {c}.<br><i>Ответ запишите в виде выражения</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "a": { "type": "choice", "values": [423, 510, 486, 398, 450, 475, 430, 512] },
+    "b": { "type": "choice", "values": ["m", "m", "m", "m", "m", "m", "m", "m"] },
+    "c": { "type": "choice", "values": [245, 312, 274, 226, 301, 295, 260, 333] },
+    "ANS": { "type": "choice", "values": ["178 - m", "198 - m", "212 - m", "172 - m", "149 - m", "180 - m", "170 - m", "179 - m"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 8,
+  "name": "2.150а Упростите выражение (a + m) − b",
+  "question_template": "Упростите выражение:<br>\\( (a + m) - b \\)<br><br>при a = {a}, b = {b}.<br><i>Ответ запишите в виде выражения</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "a": { "type": "choice", "values": [101, 134, 115, 120, 150, 118, 142, 127] },
+    "b": { "type": "choice", "values": [26, 42, 39, 48, 51, 40, 63, 35] },
+    "ANS": { "type": "choice", "values": ["75 + m", "92 + m", "76 + m", "72 + m", "99 + m", "78 + m", "79 + m", "92 + m"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 8,
+  "name": "2.150б Упростите выражение a + n − b",
+  "question_template": "Упростите выражение:<br>\\( a + n - b \\)<br><br>при a = {a}, b = {b}.<br><i>Ответ запишите в виде выражения</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "a": { "type": "choice", "values": [199, 210, 185, 220, 190, 205, 198, 214] },
+    "b": { "type": "choice", "values": [26, 45, 39, 41, 28, 37, 30, 44] },
+    "ANS": { "type": "choice", "values": ["173 + n", "165 + n", "146 + n", "179 + n", "162 + n", "168 + n", "168 + n", "170 + n"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 8,
+  "name": "2.150в Упростите выражение b + a − c",
+  "question_template": "Упростите выражение:<br>\\( b + a - c \\)<br><br>при a = {a}, c = {c}.<br><i>Ответ запишите в виде выражения</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "a": { "type": "choice", "values": [211, 230, 195, 225, 210, 205, 198, 215] },
+    "c": { "type": "choice", "values": [39, 45, 28, 40, 33, 35, 44, 37] },
+    "ANS": { "type": "choice", "values": ["b + 172", "b + 185", "b + 167", "b + 185", "b + 177", "b + 170", "b + 154", "b + 178"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 8,
+  "name": "2.150г Упростите выражение a − b + c",
+  "question_template": "Упростите выражение:<br>\\( a - b + c \\)<br><br>при b = {b}, c = {c}.<br><i>Ответ запишите в виде выражения</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "b": { "type": "choice", "values": [40, 38, 44, 35, 48, 42, 37, 39] },
+    "c": { "type": "choice", "values": [160, 150, 155, 170, 160, 158, 165, 152] },
+    "ANS": { "type": "choice", "values": ["a + 120", "a + 112", "a + 111", "a + 135", "a + 112", "a + 116", "a + 128", "a + 113"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 8,
+  "name": "2.150д Упростите выражение (a − k) + b",
+  "question_template": "Упростите выражение:<br>\\( (a - k) + b \\)<br><br>при a = {a}, b = {b}.<br><i>Ответ запишите в виде выражения</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "a": { "type": "choice", "values": [41, 45, 50, 60, 55, 48, 52, 57] },
+    "b": { "type": "choice", "values": [39, 35, 30, 25, 28, 32, 34, 29] },
+    "ANS": { "type": "choice", "values": ["80 - k", "80 - k", "80 - k", "85 - k", "83 - k", "80 - k", "86 - k", "86 - k"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 8,
+  "name": "2.150е Упростите выражение x − a + b",
+  "question_template": "Упростите выражение:<br>\\( x - a + b \\)<br><br>при a = {a}, b = {b}.<br><i>Ответ запишите в виде выражения</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "a": { "type": "choice", "values": [23, 25, 28, 30, 22, 27, 35, 26] },
+    "b": { "type": "choice", "values": [42, 40, 45, 50, 37, 48, 55, 43] },
+    "ANS": { "type": "choice", "values": ["x + 19", "x + 15", "x + 17", "x + 20", "x + 15", "x + 21", "x + 20", "x + 17"] }
+  },
+  "conditions": ""
+},
+{
+    "textbook_id": 8,
+    "name": "2.151.а Упрощение выражения x − 47 − 38",
+    "question_template": "Упростите выражение и найдите его значение:<br>\\( {x} - 47 - 38 \\)<br>если \\( x = {X} \\).<br><i>Ответ запишите числом.</i>",
+    "answer_template": "{ANS}",
+    "answer_type": "numeric",
+    "parameters": {
+      "X": {
+        "type": "choice",
+        "values": [625, 500, 300, 150, 200, 100, 400, 250]
+      },
+      "ANS": {
+        "type": "choice",
+        "values": [540, 415, 215, 65, 115, 15, 315, 165]
+      }
+    },
+    "conditions": ""
+  },
+  {
+    "textbook_id": 8,
+    "name": "2.151.б Упрощение выражения 168 + y − 68",
+    "question_template": "Упростите выражение и найдите его значение:<br>\\( 168 + {y} - 68 \\)<br>если \\( y = {Y} \\).<br><i>Ответ запишите числом.</i>",
+    "answer_template": "{ANS}",
+    "answer_type": "numeric",
+    "parameters": {
+      "Y": {
+        "type": "choice",
+        "values": [77, 50, 80, 120, 200, 30, 60, 15]
+      },
+      "ANS": {
+        "type": "choice",
+        "values": [177, 150, 180, 220, 300, 130, 160, 115]
+      }
+    },
+    "conditions": ""
+  },
+  {
+    "textbook_id": 8,
+    "name": "2.151.в Упрощение выражения 137 + a + 2",
+    "question_template": "Упростите выражение и найдите его значение:<br>\\( 137 + {a} + 2 \\)<br>если \\( a = {A} \\).<br><i>Ответ запишите числом.</i>",
+    "answer_template": "{ANS}",
+    "answer_type": "numeric",
+    "parameters": {
+      "A": {
+        "type": "choice",
+        "values": [24, 10, 50, 0, 5, 60, 20, 35]
+      },
+      "ANS": {
+        "type": "choice",
+        "values": [163, 149, 189, 139, 144, 199, 159, 174]
+      }
+    },
+    "conditions": ""
+  },
+  {
+    "textbook_id": 8,
+    "name": "2.151.г Упрощение выражения z − 135 + 25",
+    "question_template": "Упростите выражение и найдите его значение:<br>\\( {z} - 135 + 25 \\)<br>если \\( z = {Z} \\).<br><i>Ответ запишите числом.</i>",
+    "answer_template": "{ANS}",
+    "answer_type": "numeric",
+    "parameters": {
+      "Z": {
+        "type": "choice",
+        "values": [200, 150, 300, 250, 100, 175, 400, 50]
+      },
+      "ANS": {
+        "type": "choice",
+        "values": [90, 40, 190, 140, -10, 65, 290, -60]
+      }
+    },
+    "conditions": ""
+  },
+  {
+  "textbook_id": 8,
+  "name": "2.152.а Нахождение длины отрезка PQ",
+  "question_template": "Точки M и N отмечены на отрезке PQ так, что точка N лежит между точками M и Q.<br>Составьте выражение для нахождения длины отрезка PQ, если PM = {a} мм, MN = {z} мм и NQ = {b} мм.<br>Найдите значение получившегося выражения при z = {z1}; {z2}.<br><i>Ответы введите через точку с запятой.</i>",
+  "answer_template": "{ANS1}; {ANS2}",
+  "answer_type": "string",
+  "parameters": {
+    "a": { "type": "choice", "values": [360, 410, 375, 342, 398, 355, 420, 390] },
+    "b": { "type": "choice", "values": [80, 65, 70, 85, 72, 90, 75, 68] },
+    "z1": { "type": "choice", "values": [220, 240, 190, 210, 250, 215, 180, 225] },
+    "z2": { "type": "choice", "values": [385, 300, 260, 280, 320, 295, 240, 384] },
+    "ANS1": { "type": "choice", "values": [660, 715, 635, 637, 720, 660, 675, 683] },
+    "ANS2": { "type": "choice", "values": [825, 775, 705, 707, 790, 740, 735, 842] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 8,
+  "name": "2.152.б Нахождение длины отрезка PM",
+  "question_template": "Точки M и N отмечены на отрезке PQ так, что точка N лежит между точками M и Q.<br>Составьте выражение для нахождения длины отрезка PM, если PQ = {p} мм, MN = {m} мм и NQ = {z} мм.<br>Найдите значение получившегося выражения при z = {z1}; {z2}.<br><i>Ответы введите через точку с запятой.</i>",
+  "answer_template": "{ANS1}; {ANS2}",
+  "answer_type": "string",
+  "parameters": {
+    "p": { "type": "choice", "values": [230, 260, 245, 300, 275, 240, 220, 226] },
+    "m": { "type": "choice", "values": [74, 80, 68, 75, 72, 66, 60, 74] },
+    "z1": { "type": "choice", "values": [47, 50, 55, 60, 70, 48, 45, 47] },
+    "z2": { "type": "choice", "values": [105, 90, 92, 110, 100, 84, 80, 105] },
+    "ANS1": { "type": "choice", "values": [109, 130, 122, 165, 133, 126, 115, 105] },
+    "ANS2": { "type": "choice", "values": [51, 90, 85, 115, 103, 90, 80, 47] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 8,
+  "name": "2.153.а Поле, засеянное трактористом за три дня",
+  "question_template": "Тракторист засеял поле за три дня.<br>В первый день он засеял 18 га, что на {a} га больше, чем во второй день, и на 3 га меньше, чем в третий.<br>Сколько гектаров засеял тракторист за три дня?<br>Составьте выражение для решения задачи и найдите его значение, если a = {a1}; a = {a2}.<br><i>Ответы введите через точку с запятой.</i>",
+  "answer_template": "{ANS1}; {ANS2}",
+  "answer_type": "string",
+  "parameters": {
+    "a": { "type": "choice", "values": [4, 3, 2, 5, 6, 7, 8, 9] },
+    "a1": { "type": "choice", "values": [4, 3, 2, 5, 6, 7, 8, 9] },
+    "a2": { "type": "choice", "values": [6, 7, 8, 9, 10, 11, 12, 13] },
+    "ANS1": { "type": "choice", "values": [53, 54, 55, 52, 51, 50, 49, 48] },
+    "ANS2": { "type": "choice", "values": [51, 50, 49, 48, 47, 46, 45, 44] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 8,
+  "name": "2.181.а Вычисление выражения a − b ÷ (c − d)",
+  "question_template": "Вычислите значение выражения:<br>\\( {a} - {b} : ({c} - {d}) \\)<br><i>Ответ запишите числом</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "numeric",
+  "parameters": {
+    "a": { "type": "choice", "values": [39452, 45638, 60215, 72384, 54170, 81295, 64518, 90064] },
+    "b": { "type": "choice", "values": [16440, 22800, 24000, 18000, 36000, 27000, 16000, 18000] },
+    "c": { "type": "choice", "values": [300, 250, 120, 200, 180, 300, 400, 150] },
+    "d": { "type": "choice", "values": [260, 238, 90, 150, 140, 270, 360, 120] },
+    "ANS": { "type": "choice", "values": [39041, 43738, 59415, 72024, 53270, 80395, 64118, 89464] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 8,
+  "name": "2.181.б Вычисление выражения a ÷ c + b ÷ d",
+  "question_template": "Вычислите значение выражения:<br>\\( {a} : {c} + {b} : {d} \\)<br><i>Ответ запишите числом</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "numeric",
+  "parameters": {
+    "a": { "type": "choice", "values": [2556000, 1260540, 1728000, 2160000, 3150000, 4200000, 2400000, 1890000] },
+    "b": { "type": "choice", "values": [1662000, 2100000, 864000, 1440000, 2100000, 1800000, 3600000, 2520000] },
+    "c": { "type": "choice", "values": [60, 45, 48, 60, 75, 70, 60, 45] },
+    "d": { "type": "choice", "values": [30, 50, 24, 30, 50, 30, 40, 35] },
+    "ANS": { "type": "choice", "values": [98000, 70012, 72000, 84000, 84000, 120000, 130000, 114000] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 8,
+  "name": "2.181.в Вычисление выражения a − b · (c − d)",
+  "question_template": "Вычислите значение выражения:<br>\\( {a} - {b} \\cdot ({c} - {d}) \\)<br><i>Ответ запишите числом</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "numeric",
+  "parameters": {
+    "a": { "type": "choice", "values": [93601, 105000, 84350, 97400, 120000, 90000, 88880, 110000] },
+    "b": { "type": "choice", "values": [601, 700, 650, 400, 500, 450, 320, 550] },
+    "c": { "type": "choice", "values": [231, 220, 210, 250, 280, 210, 200, 190] },
+    "d": { "type": "choice", "values": [88, 100, 140, 100, 160, 140, 120, 90] },
+    "ANS": { "type": "choice", "values": [7558, 21000, 38850, 37400, 60000, 58500, 63280, 55000] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 8,
+  "name": "2.181.г Вычисление выражения a + b · c + d",
+  "question_template": "Вычислите значение выражения:<br>\\( {a} + {b} \\cdot {c} + {d} \\)<br><i>Ответ запишите числом</i>",
+  "answer_template": "{ANS}",
+  "answer_type": "numeric",
+  "parameters": {
+    "a": { "type": "choice", "values": [329503, 150000, 100000, 250000, 175000, 210000, 190000, 280000] },
+    "b": { "type": "choice", "values": [12146, 4000, 5000, 6000, 7000, 5000, 8000, 10000] },
+    "c": { "type": "choice", "values": [28, 30, 20, 25, 35, 40, 15, 25] },
+    "d": { "type": "choice", "values": [715449, 240000, 150000, 200000, 300000, 150000, 100000, 220000] },
+    "ANS": { "type": "choice", "values": [1385040, 510000, 350000, 600000, 720000, 560000, 410000, 750000] }
+  },
+  "conditions": ""
 }
-
-
-
-
-
 
 
 ]

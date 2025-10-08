@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Повторение ошибок — Math Teaching System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="lesson-container">
+        <header class="lesson-header">
+            <h1>📘 Повторение ошибок</h1>
+            <a href="{{ url_for('student_profile') }}" class="btn btn-back">← Назад в личный кабинет</a>
+        </header>
+
+        <main class="lesson-content">
+            {% if tasks %}
+                {% for task in tasks %}
+                <div class="task-card"
+                     data-task-id="{{ task.id }}"
+                     data-user-id="{{ user_id }}"
+                     data-correct-answer="{{ task.correct_answer }}"
+                     data-answer-type="{{ task.answer_type }}"
+                     data-template-id="{{ task.template_id }}"
+                     data-params='{{ task.params|tojson|safe }}'>
+                    <div class="task-body">
+                        <div class="task-question">{{ task.question|safe }}</div>
+                        <div class="task-answer">
+                            <input type="text" class="answer-input" placeholder="Введите ответ">
+                            <button class="btn btn-check">Проверить</button>
+                        </div>
+                        <div class="task-feedback hidden">
+                            <div class="feedback-correct hidden">✅ Правильно!</div>
+                            <div class="feedback-incorrect hidden">❌ Неверно, попробуйте снова</div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>Все ошибки уже решены 🎉</p>
+            {% endif %}
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/student_retry.js') }}"></script>
+</body>
+</html>
