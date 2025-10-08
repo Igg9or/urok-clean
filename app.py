@@ -892,46 +892,82 @@ def save_answer():
     conn = get_db()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
-    # Проверяем, есть ли уже ответ (НОВОЕ)
+    # Приведение типов
+    is_correct_val = data.get('is_correct', False)
+    if isinstance(is_correct_val, str):
+        is_correct_val = is_correct_val.lower() in ['true', '1', 'yes']
+    elif isinstance(is_correct_val, int):
+        is_correct_val = bool(is_correct_val)
+    elif not isinstance(is_correct_val, bool):
+        is_correct_val = False
+
+    # Новый параметр retry_used
+    retry_used = data.get('retry_used', False)
+    if isinstance(retry_used, str):
+        retry_used = retry_used.lower() in ['true', '1', 'yes']
+    elif isinstance(retry_used, int):
+        retry_used = bool(retry_used)
+    elif not isinstance(retry_used, bool):
+        retry_used = False
+
+    # Проверяем, есть ли уже ответ
     cursor.execute('''
-        SELECT answer, is_correct FROM student_answers 
+        SELECT answer, is_correct, retry_used 
+        FROM student_answers 
         WHERE task_id = %s AND user_id = %s
     ''', (task_id, user_id))
     existing = cursor.fetchone()
 
     if existing:
-        return jsonify({  # Возвращаем существующий ответ, а не ошибку
+        old_correct = existing['is_correct']
+        old_retry = existing.get('retry_used', False)
+
+        # ✅ Если ученик теперь решил правильно, обновляем статус и retry_used
+        if is_correct_val and not old_correct:
+            cursor.execute('''
+                UPDATE student_answers
+                SET answer = %s,
+                    is_correct = TRUE,
+                    retry_used = %s,
+                    answered_at = CURRENT_TIMESTAMP
+                WHERE task_id = %s AND user_id = %s
+            ''', (data['answer'], True, task_id, user_id))
+            conn.commit()
+            return jsonify({'success': True, 'updated_to_correct': True})
+
+        # ✅ Если ученик уже перерешивал (retry_used=True), обновляем этот флаг
+        elif retry_used and not old_retry:
+            cursor.execute('''
+                UPDATE student_answers
+                SET retry_used = TRUE,
+                    answered_at = CURRENT_TIMESTAMP
+                WHERE task_id = %s AND user_id = %s
+            ''', (task_id, user_id))
+            conn.commit()
+            return jsonify({'success': True, 'retry_marked': True})
+
+        # Иначе просто возвращаем старые данные
+        return jsonify({
             'success': True,
             'already_exists': True,
             'saved_answer': existing['answer'],
-            'is_correct': existing['is_correct']
+            'is_correct': existing['is_correct'],
+            'retry_used': existing['retry_used']
         })
 
-    # Старая логика сохранения (ОСТАЕТСЯ БЕЗ ИЗМЕНЕНИЙ)
-    is_correct_val = data['is_correct']
-    if isinstance(is_correct_val, str):
-        is_correct_val = is_correct_val.lower() in ['true', '1', 'yes']
-    elif isinstance(is_correct_val, int):
-        is_correct_val = bool(is_correct_val)
-    elif isinstance(is_correct_val, bool):
-        pass
-    else:
-        is_correct_val = False
-
+    # 🔹 Если записи ещё нет — создаём новую
     cursor.execute('''
-        INSERT INTO student_answers (task_id, user_id, answer, is_correct, answered_at)
-        VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP)
+        INSERT INTO student_answers (task_id, user_id, answer, is_correct, retry_used, answered_at)
+        VALUES (%s, %s, %s, %s, %s, CURRENT_TIMESTAMP)
         ON CONFLICT (task_id, user_id) DO UPDATE SET
             answer = EXCLUDED.answer,
             is_correct = EXCLUDED.is_correct,
+            retry_used = EXCLUDED.retry_used,
             answered_at = CURRENT_TIMESTAMP
-    ''', (task_id, user_id, data['answer'], is_correct_val))
+    ''', (task_id, user_id, data['answer'], is_correct_val, retry_used))
 
     conn.commit()
     return jsonify({'success': True, 'already_exists': False})
-
-
-
 
 
 
@@ -992,7 +1028,7 @@ def get_student_answers(lesson_id, user_id):
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     
     cursor.execute('''
-        SELECT task_id, answer, is_correct
+        SELECT task_id, answer, is_correct, retry_used
         FROM student_answers
         WHERE user_id = %s AND task_id IN (
             SELECT id FROM lesson_tasks WHERE lesson_id = %s
@@ -1000,7 +1036,10 @@ def get_student_answers(lesson_id, user_id):
     ''', (user_id, lesson_id))
     
     answers = cursor.fetchall()
+    conn.close()
+    print("DEBUG get_student_answers:", answers)
     return jsonify([dict(answer) for answer in answers])
+
 
 
 

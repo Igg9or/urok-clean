@@ -4,17 +4,29 @@ console.log('student_lesson.js v5 loaded');
 let currentRetryTaskCard = null;
 let currentRetryTaskId = null;
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Загружаем сохраненные ответы при старте
-    loadSavedAnswers();
+document.addEventListener('DOMContentLoaded', async function() {
+    // 1️⃣ Загружаем сохраненные ответы (дождёмся выполнения)
+    await loadSavedAnswers();
 
-    // Вешаем обработчики на все кнопки проверки
+    // 2️⃣ После загрузки проверяем все задания и скрываем лишние кнопки
+    document.querySelectorAll('.task-card').forEach(taskCard => {
+        if (taskCard.dataset.retryCompleted === "true" || taskCard.dataset.retryUsed === "true") {
+            const retryBtn = taskCard.querySelector('.btn-retry');
+            if (retryBtn) {
+                retryBtn.disabled = true;
+                retryBtn.classList.add('hidden');
+            }
+        }
+    });
+
+    // 3️⃣ Вешаем обработчики на кнопки проверки
     document.querySelectorAll('.btn-check').forEach(button => {
         button.addEventListener('click', function() {
             checkAnswer(this.closest('.task-card'));
         });
     });
 
+    // 4️⃣ Инициализация модального окна
     initRetryModal();
 
     function extractQuestionForAI(taskCard) {
@@ -44,17 +56,33 @@ document.addEventListener('DOMContentLoaded', function() {
     
             // Функция для показа кнопки "Решить еще раз"
     function showRetryButton(taskCard) {
-        const retryButton = taskCard.querySelector('.btn-retry');
-        if (retryButton) {
-            retryButton.classList.remove('hidden');
-            
-            // Обработчик для кнопки "Решить еще раз"
-            retryButton.onclick = () => openRetryModal(taskCard);
+    // 🔒 Не показываем, если задание уже перерешано или retry_used = true
+    if (taskCard.dataset.retryCompleted === "true" || taskCard.dataset.retryUsed === "true") {
+        const retryBtn = taskCard.querySelector('.btn-retry');
+        if (retryBtn) {
+            retryBtn.classList.add('hidden');
+            retryBtn.disabled = true;
         }
+        return;
     }
+
+    const retryButton = taskCard.querySelector('.btn-retry');
+    if (retryButton) {
+        retryButton.classList.remove('hidden');
+        retryButton.disabled = false;
+        retryButton.onclick = () => openRetryModal(taskCard);
+    }
+}
 
     // Функция открытия модального окна
     async function openRetryModal(taskCard) {
+
+            // 🔒 Если уже перерешивал — запрещаем повтор
+        if (taskCard.dataset.retryCompleted === "true") {
+            alert("Вы уже перерешивали это задание. Повторно нельзя.");
+            return;
+        }
+
         currentRetryTaskCard = taskCard;
         currentRetryTaskId = taskCard.dataset.taskId;
         
@@ -186,30 +214,36 @@ function normalizeLatexForRetry(text) {
             const result = await response.json();
             
             if (result.is_correct) {
-                // Если правильно - засчитываем оригинальное задание как верное
+                // ✅ Если правильно - засчитываем оригинальное задание как верное
                 feedback.innerHTML = '<div class="success">Правильно! Задание засчитано.</div>';
                 feedback.classList.remove('hidden');
                 
                 // Блокируем поле ввода
                 input.disabled = true;
                 document.querySelector('.btn-check-retry').disabled = true;
-                
-                // Сохраняем результат для оригинального задания
+
                 setTimeout(async () => {
-                    await saveAnswerToServer(currentRetryTaskId, userAnswer, true);
-                    
+                    await saveAnswerToServer(currentRetryTaskId, userAnswer, true, true);
+
+                    // 🔒 Помечаем задание как перерешанное (больше нельзя)
+                    currentRetryTaskCard.dataset.retryCompleted = "true";
+                    const retryBtn = currentRetryTaskCard.querySelector('.btn-retry');
+                    if (retryBtn) {
+                        retryBtn.disabled = true;
+                        retryBtn.classList.add('hidden');
+                    }
+
                     // Обновляем интерфейс оригинального задания
                     showResult(currentRetryTaskCard, true, userAnswer);
                     currentRetryTaskCard.querySelector('.answer-input').disabled = true;
                     currentRetryTaskCard.querySelector('.btn-check').disabled = true;
-                    currentRetryTaskCard.querySelector('.btn-retry').classList.add('hidden');
-                    
+
                     // Закрываем модальное окно
                     closeRetryModal();
                 }, 1500);
-                
+
             } else {
-                // Если неправильно - показываем ошибку
+                // ❌ Если неправильно - показываем ошибку
                 feedback.innerHTML = `
                     <div class="error">
                         Неправильно! Правильный ответ: ${correctAnswer}
@@ -217,14 +251,25 @@ function normalizeLatexForRetry(text) {
                     </div>
                 `;
                 feedback.classList.remove('hidden');
-                
+
                 // Блокируем дальнейшие попытки
                 input.disabled = true;
                 document.querySelector('.btn-check-retry').disabled = true;
                 document.querySelector('.btn-cancel').textContent = 'Закрыть';
-                
+
+                // 🔒 Также блокируем кнопку "Решить ещё раз" навсегда
+                currentRetryTaskCard.dataset.retryCompleted = "true";
+                const retryBtn = currentRetryTaskCard.querySelector('.btn-retry');
+                if (retryBtn) {
+                    retryBtn.disabled = true;
+                    retryBtn.classList.add('hidden');
+                }
+
                 // Сохраняем результат как неправильный
-                await saveAnswerToServer(currentRetryTaskId, userAnswer, false);
+                await saveAnswerToServer(currentRetryTaskId, userAnswer, false, true);
+
+                // Закрываем модальное окно
+                closeRetryModal();
             }
             
         } catch (error) {
@@ -236,11 +281,22 @@ function normalizeLatexForRetry(text) {
 
     // Функция закрытия модального окна
     function closeRetryModal() {
-        const modal = document.getElementById('retryModal');
-        modal.classList.add('hidden');
-        currentRetryTaskCard = null;
-        currentRetryTaskId = null;
-    }
+    const modal = document.getElementById('retryModal');
+    modal.classList.add('hidden');
+
+    // 🔹 Сбрасываем контент и состояние кнопок
+    const content = modal.querySelector('.retry-task-content');
+    if (content) content.innerHTML = ''; // очищаем задание
+
+    const checkBtn = modal.querySelector('.btn-check-retry');
+    const cancelBtn = modal.querySelector('.btn-cancel');
+    if (checkBtn) checkBtn.disabled = false;
+    if (cancelBtn) cancelBtn.textContent = 'Отмена';
+
+    // 🔹 Сбрасываем текущие ссылки на задание
+    currentRetryTaskCard = null;
+    currentRetryTaskId = null;
+}
 
     // Инициализация модального окна
     function initRetryModal() {
@@ -287,6 +343,19 @@ function normalizeLatexForRetry(text) {
                         input.disabled = true;
                         button.disabled = true;
                         showResult(taskCard, answer.is_correct, answer.answer);
+                    }
+
+                    // 🔒 Если ученик уже перерешивал задание — скрываем кнопку "Решить еще раз"
+                    // 🔒 Если ученик уже перерешивал задание — навсегда скрываем кнопку
+                    if (answer.retry_used) {
+                        taskCard.dataset.retryUsed = "true";
+                        taskCard.dataset.retryCompleted = "true";
+
+                        const retryBtn = taskCard.querySelector('.btn-retry');
+                        if (retryBtn) {
+                            retryBtn.disabled = true;
+                            retryBtn.classList.add('hidden');
+                        }
                     }
                 }
             });
@@ -432,21 +501,22 @@ userAnswer = userAnswer.replace(/([0-9]*\.?[0-9]*|)\s*√\s*(\(?[a-zA-Z0-9+*/\s-
     }
 
     // Функция сохранения ответа на сервере
-    async function saveAnswerToServer(taskId, answer, isCorrect) {
-        try {
-            await fetch('/save_answer', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    task_id: taskId,
-                    answer: answer,
-                    is_correct: isCorrect
-                })
-            });
-        } catch (error) {
-            console.error('Ошибка сохранения:', error);
-        }
+    async function saveAnswerToServer(taskId, answer, isCorrect, retryUsed = false) {
+    try {
+        await fetch('/save_answer', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                task_id: taskId,
+                answer: answer,
+                is_correct: isCorrect,
+                retry_used: retryUsed
+            })
+        });
+    } catch (error) {
+        console.error('Ошибка сохранения:', error);
     }
+}
 
     // Функция обновления прогресса (без изменений)
     function updateProgress() {
