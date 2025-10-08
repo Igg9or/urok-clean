@@ -268,8 +268,7 @@ function normalizeLatexForRetry(text) {
                 // Сохраняем результат как неправильный
                 await saveAnswerToServer(currentRetryTaskId, userAnswer, false, true);
 
-                // Закрываем модальное окно
-                closeRetryModal();
+                
             }
             
         } catch (error) {
@@ -424,8 +423,14 @@ userAnswer = userAnswer.replace(/([0-9]*\.?[0-9]*|)\s*√\s*(\(?[a-zA-Z0-9+*/\s-
     taskCard.querySelector('.answer-input').disabled = true;
     taskCard.querySelector('.btn-check').disabled = true;
     await saveAnswerToServer(taskId, userAnswer, false);
+    const msg = taskCard.querySelector('.feedback-incorrect .error-message');
+    if (msg) {
+      msg.innerHTML = "Ответ неверный. Правильный ответ: <span class='correct-answer'>" +
+                      correctAnswer + "</span>";
+    }
+
     taskCard.querySelector('.btn-dispute')?.classList.remove('hidden');
-    showRetryButton(taskCard);       // показать "Решить еще раз"
+    showRetryButton(taskCard);
     fetchAISolution(taskCard);       // показать полное решение от ИИ
 
 } else {
