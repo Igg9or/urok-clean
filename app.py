@@ -1028,7 +1028,7 @@ def get_student_answers(lesson_id, user_id):
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     
     cursor.execute('''
-        SELECT task_id, answer, is_correct, retry_used
+        SELECT task_id, answer, is_correct, COALESCE(retry_used, FALSE) AS retry_used
         FROM student_answers
         WHERE user_id = %s AND task_id IN (
             SELECT id FROM lesson_tasks WHERE lesson_id = %s
