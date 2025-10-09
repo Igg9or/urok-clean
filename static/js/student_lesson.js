@@ -4,6 +4,9 @@ console.log('student_lesson.js v5 loaded');
 let currentRetryTaskCard = null;
 let currentRetryTaskId = null;
 
+// ✅ Кеш сгенерированных заданий "Решить ещё раз": taskId -> { html }
+const retryTaskCache = {};
+
 document.addEventListener('DOMContentLoaded', async function() {
     // 1️⃣ Загружаем сохраненные ответы (дождёмся выполнения)
     await loadSavedAnswers();
@@ -75,99 +78,124 @@ document.addEventListener('DOMContentLoaded', async function() {
 }
 
     // Функция открытия модального окна
-    async function openRetryModal(taskCard) {
+    // Функция открытия модального окна
+async function openRetryModal(taskCard) {
 
-            // 🔒 Если уже перерешивал — запрещаем повтор
-        if (taskCard.dataset.retryCompleted === "true") {
-            alert("Вы уже перерешивали это задание. Повторно нельзя.");
-            return;
-        }
-
-        currentRetryTaskCard = taskCard;
-        currentRetryTaskId = taskCard.dataset.taskId;
-        
-        const modal = document.getElementById('retryModal');
-        const content = modal.querySelector('.retry-task-content');
-        
-        // Показываем загрузку
-        content.innerHTML = '<div class="loading">Загрузка нового задания...</div>';
-        modal.classList.remove('hidden');
-        
-        try {
-            // Загружаем новое задание
-            await loadNewTaskVariant(taskCard, content);
-        } catch (error) {
-            console.error('Ошибка загрузки нового задания:', error);
-            content.innerHTML = '<div class="error">Ошибка загрузки задания</div>';
-        }
+    // 🔒 Если уже перерешивал — запрещаем повтор
+    if (taskCard.dataset.retryCompleted === "true") {
+        alert("Вы уже перерешивали это задание. Повторно нельзя.");
+        return;
     }
+
+    currentRetryTaskCard = taskCard;
+    currentRetryTaskId = taskCard.dataset.taskId;
+
+    const modal = document.getElementById('retryModal');
+    const content = modal.querySelector('.retry-task-content');
+    const taskId = currentRetryTaskId;
+
+    // ✅ 1) Если есть в кеше — показываем из кеша и выходим
+    if (retryTaskCache[taskId]) {
+        content.innerHTML = retryTaskCache[taskId].html;
+        modal.classList.remove('hidden');
+
+        // Перепривязываем обработчик кнопки проверки
+        const checkBtn = modal.querySelector('.btn-check-retry');
+        if (checkBtn) checkBtn.onclick = checkRetryAnswer;
+
+        // На всякий случай прогоняем MathJax по контенту
+        if (window.MathJax && typeof MathJax.typesetPromise === 'function') {
+            try { await MathJax.typesetPromise([content]); } catch (e) { console.error('MathJax error:', e); }
+        }
+        return;
+    }
+
+    // ❌ В кеше нет — грузим с сервера
+    content.innerHTML = '<div class="loading">Загрузка нового задания...</div>';
+    modal.classList.remove('hidden');
+
+    try {
+        await loadNewTaskVariant(taskCard, content);
+    } catch (error) {
+        console.error('Ошибка загрузки нового задания:', error);
+        content.innerHTML = '<div class="error">Ошибка загрузки задания</div>';
+    }
+}
+
 
     // Функция загрузки нового варианта задания
     async function loadNewTaskVariant(taskCard, contentContainer) {
-        const taskId = taskCard.dataset.taskId;
-        const userId = taskCard.dataset.userId;
-        
-        console.log('Загрузка нового задания для taskId:', taskId);
-        
-        if (!taskId) {
-            contentContainer.innerHTML = '<div class="error">Ошибка: не найден ID задания</div>';
-            return;
-        }
-        
-        try {
-            const response = await fetch(`/api/generate_retry_task/${taskId}`);
-            console.log('Response status:', response.status);
-            
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            
-            const newTask = await response.json();
-            console.log('Получено новое задание:', newTask);
-            
-            if (newTask.error) {
-                throw new Error(newTask.error);
-            }
-            
-            // Нормализуем LaTeX в вопросе
-            const normalizedQuestion = normalizeLatexForRetry(newTask.question);
-            
-            // Отображаем новое задание с правильным форматированием LaTeX
-            contentContainer.innerHTML = `
-                <div class="retry-task">
-                    <div class="task-question" id="retry-question">${normalizedQuestion || 'Вопрос не сгенерирован'}</div>
-                    <div class="task-answer">
-                        <input type="text" class="retry-answer-input" placeholder="Введите ваш ответ">
-                    </div>
-                    <div class="retry-feedback hidden"></div>
-                    <input type="hidden" class="retry-correct-answer" value="${newTask.correct_answer || ''}">
-                    <input type="hidden" class="retry-answer-type" value="${taskCard.dataset.answerType || 'numeric'}">
-                </div>
-            `;
-            
-            // Применяем MathJax к новому контенту
-            if (window.MathJax && typeof MathJax.typesetPromise === 'function') {
-                try {
-                    await MathJax.typesetPromise([contentContainer]);
-                    console.log('MathJax applied to retry task');
-                } catch (mathError) {
-                    console.error('MathJax error:', mathError);
-                }
-            }
-            
-            // Добавляем обработчик для кнопки проверки в модалке
-            document.querySelector('.btn-check-retry').onclick = checkRetryAnswer;
-            
-        } catch (error) {
-            console.error('Ошибка загрузки нового задания:', error);
-            contentContainer.innerHTML = `
-                <div class="error">
-                    Ошибка загрузки задания: ${error.message}
-                    <br>Task ID: ${taskId}
-                </div>
-            `;
-        }
+    const taskId = taskCard.dataset.taskId;
+    const userId = taskCard.dataset.userId;
+
+    console.log('Загрузка нового задания для taskId:', taskId);
+
+    if (!taskId) {
+        contentContainer.innerHTML = '<div class="error">Ошибка: не найден ID задания</div>';
+        return;
     }
+
+    try {
+        const response = await fetch(`/api/generate_retry_task/${taskId}`);
+        console.log('Response status:', response.status);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const newTask = await response.json();
+        console.log('Получено новое задание:', newTask);
+
+        if (newTask.error) {
+            throw new Error(newTask.error);
+        }
+
+        // Нормализуем LaTeX в вопросе
+        const normalizedQuestion = normalizeLatexForRetry(newTask.question);
+
+        // ✅ Формируем HTML
+        const html = `
+            <div class="retry-task">
+                <div class="task-question" id="retry-question">${normalizedQuestion || 'Вопрос не сгенерирован'}</div>
+                <div class="task-answer">
+                    <input type="text" class="retry-answer-input" placeholder="Введите ваш ответ">
+                </div>
+                <div class="retry-feedback hidden"></div>
+                <input type="hidden" class="retry-correct-answer" value="${newTask.correct_answer || ''}">
+                <input type="hidden" class="retry-answer-type" value="${taskCard.dataset.answerType || 'numeric'}">
+            </div>
+        `;
+
+        // ✅ Сохраняем HTML в кеш, чтобы потом не генерировать заново
+        retryTaskCache[taskId] = { html };
+
+        // Отображаем новое задание
+        contentContainer.innerHTML = html;
+
+        // Применяем MathJax к новому контенту
+        if (window.MathJax && typeof MathJax.typesetPromise === 'function') {
+            try {
+                await MathJax.typesetPromise([contentContainer]);
+                console.log('MathJax applied to retry task');
+            } catch (mathError) {
+                console.error('MathJax error:', mathError);
+            }
+        }
+
+        // Добавляем обработчик для кнопки проверки в модалке
+        document.querySelector('.btn-check-retry').onclick = checkRetryAnswer;
+
+    } catch (error) {
+        console.error('Ошибка загрузки нового задания:', error);
+        contentContainer.innerHTML = `
+            <div class="error">
+                Ошибка загрузки задания: ${error.message}
+                <br>Task ID: ${taskId}
+            </div>
+        `;
+    }
+}
+
 
     // Функция для нормализации LaTeX в модальном окне
 function normalizeLatexForRetry(text) {

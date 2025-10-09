@@ -2290,8 +2290,6 @@ def infer_student_mark(user_id: int) -> int:
     finally:
         conn.close()
 
-
-
 @app.route('/api/generate_retry_task/<int:task_id>')
 def generate_retry_task(task_id):
     if 'user_id' not in session:
@@ -2302,27 +2300,10 @@ def generate_retry_task(task_id):
     try:
         cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
-        # --- Проверка: есть ли уже retry-вариант ---
+        # --- Получаем lesson_id и шаблон ---
         cursor.execute('''
-            SELECT variant_data FROM student_task_variants
-            WHERE lesson_id = (
-                SELECT lesson_id FROM lesson_tasks WHERE id = %s
-            )
-            AND user_id = %s
-            AND task_id = %s
-            AND variant_type = 'retry'
-        ''', (task_id, user_id, task_id))
-        retry_variant = cursor.fetchone()
-
-        if retry_variant:
-            data = retry_variant['variant_data']
-            if isinstance(data, str):
-                data = json.loads(data)
-            return jsonify(data)
-
-        # --- Если нет, генерируем новый ---
-        cursor.execute('''
-            SELECT lt.*, tt.question_template, tt.answer_template, tt.parameters, tt.conditions, tt.answer_type
+            SELECT lt.lesson_id, lt.template_id, tt.question_template, tt.answer_template,
+                   tt.parameters, tt.conditions, tt.answer_type
             FROM lesson_tasks lt
             LEFT JOIN task_templates tt ON lt.template_id = tt.id
             WHERE lt.id = %s
@@ -2335,36 +2316,49 @@ def generate_retry_task(task_id):
         if isinstance(params, str):
             try:
                 params = json.loads(params)
-            except:
+            except Exception:
                 params = {}
         elif not isinstance(params, dict):
             params = {}
 
+        # --- Генерируем новый вариант ---
         template_dict = {
             'id': task['template_id'],
-            'question_template': task['question_template'] or task['question'],
-            'answer_template': task['answer_template'] or task['answer'],
+            'question_template': task['question_template'],
+            'answer_template': task['answer_template'],
             'parameters': params,
             'conditions': task['conditions'] or '',
             'answer_type': task['answer_type'] or 'numeric'
         }
 
-        variant = TaskGenerator.generate_task_variant(template_dict, band=None)
+        variant = TaskGenerator.generate_task_variant(template_dict)
 
-        # --- Сохраняем как retry-вариант ---
+        # --- Сохраняем как текущий вариант ученика (перезаписываем) ---
+        variant_data = {
+            'params': variant['params'],
+            'generated_question': variant['question'],
+            'computed_answer': variant['correct_answer']
+        }
+
         cursor.execute('''
-            INSERT INTO student_task_variants
-            (lesson_id, user_id, task_id, variant_data, variant_type)
-            VALUES (%s, %s, %s, %s, 'retry')
+            INSERT INTO student_task_variants (lesson_id, user_id, task_id, variant_data)
+            VALUES (%s, %s, %s, %s)
             ON CONFLICT (lesson_id, user_id, task_id)
-DO UPDATE SET variant_data = EXCLUDED.variant_data
-        ''', (task['lesson_id'], user_id, task_id, json.dumps(variant)))
+            DO UPDATE SET variant_data = EXCLUDED.variant_data,
+                          created_at = CURRENT_TIMESTAMP
+        ''', (task['lesson_id'], user_id, task_id, json.dumps(variant_data)))
 
         conn.commit()
-        return jsonify(variant)
+
+        return jsonify({
+            'question': variant['question'],
+            'correct_answer': variant['correct_answer'],
+            'params': variant['params']
+        })
 
     except Exception as e:
         print(f"ERROR generating retry task: {e}")
+        conn.rollback()
         return jsonify({'error': str(e)}), 500
     finally:
         conn.close()

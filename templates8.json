@@ -3192,6 +3192,114 @@
     ] }
   },
   "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "82.а Преобразование выражения x + 1/y",
+  "question_template": "Преобразуйте выражение:<br>\\( {x} + \\tfrac{1}{{{y}}} \\)<br>Запишите его в виде одной дроби. Скобки в числителе",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "x": { "type": "choice", "values": ["a", "m", "p", "c", "r", "t", "u", "w"] },
+    "y": { "type": "choice", "values": ["b", "n", "q", "d", "s", "k", "v", "z"] },
+    "ANS": { "type": "choice", "values": ["(ab + 1)/b", "(mn + 1)/n", "(pq + 1)/q", "(cd + 1)/d", "(rs + 1)/s", "(tk + 1)/k", "(uv + 1)/v", "(wz + 1)/z"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "82.б Преобразование выражения 1/a − a",
+  "question_template": "Преобразуйте выражение:<br>\\( \\tfrac{1}{{{var}}} - {var} \\)<br>Запишите его в виде одной дроби. Скобки в числителе ",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "var": { "type": "choice", "values": ["a", "b", "c", "d", "m", "n", "p", "x"] },
+    "ANS": { "type": "choice", "values": ["(1 - a^2)/a", "(1 - b^2)/b", "(1 - c^2)/c", "(1 - d^2)/d", "(1 - m^2)/m", "(1 - n^2)/n", "(1 - p^2)/p", "(1 - x^2)/x"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "82.в Преобразование выражения ka − a/n",
+  "question_template": "Преобразуйте выражение:<br>\\( {k}{var} - \\tfrac{{{var}}}{{{n}}} \\)<br>Запишите результат в виде одной дроби. Скобки не нужны",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "k": { "type": "choice", "values": [3, 2, 4, 5, 6, 7, 8, 9] },
+    "n": { "type": "choice", "values": [4, 5, 3, 6, 7, 8, 9, 10] },
+    "var": { "type": "choice", "values": ["a", "b", "c", "d", "m", "n", "p", "x"] },
+    "ANS": { "type": "choice", "values": ["11a/4", "9b/5", "11c/3", "29d/6", "41m/7", "55n/8", "71p/9", "89x/10"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "82.г Преобразование выражения kb − m/b",
+  "question_template": "Преобразуйте выражение:<br>\\( {k}{var} - \\tfrac{{{m}}}{{{var}}} \\)<br>Запишите результат в виде одной дроби. Скобки в числителе",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "k": { "type": "choice", "values": [5, 3, 6, 4, 7, 8, 9, 10] },
+    "m": { "type": "choice", "values": [2, 4, 5, 3, 6, 1, 7, 9] },
+    "var": { "type": "choice", "values": ["b", "c", "d", "a", "m", "n", "p", "x"] },
+    "ANS": { "type": "choice", "values": ["(5b^2 - 2)/b", "(3c^2 - 4)/c", "(6d^2 - 5)/d", "(4a^2 - 3)/a", "(7m^2 - 6)/m", "(8n^2 - 1)/n", "(9p^2 - 7)/p", "(10x^2 - 9)/x"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "86.а Преобразование выражения (b−c)/b + b/(b+c)",
+  "question_template": "Преобразуйте выражение:<br>\\( \\tfrac{{{var1}} - {{var2}}}{{{var1}}} + \\tfrac{{{var1}}}{{{var1}} + {{var2}}} \\)<br>Запишите результат в виде одной дроби. Весь числитель и весь знаменатель возьмите в скобки ",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "var1": { "type": "choice", "values": ["b", "a", "p", "x", "k", "r", "u", "n"] },
+    "var2": { "type": "choice", "values": ["c", "m", "q", "y", "t", "s", "v", "d"] },
+    "ANS": { "type": "choice", "values": ["(2b^2 - c^2)/(b(b + c))", "(2a^2 - m^2)/(a(a + m))", "(2p^2 - q^2)/(p(p + q))", "(2x^2 - y^2)/(x(x + y))", "(2k^2 - t^2)/(k(k + t))", "(2r^2 - s^2)/(r(r + s))", "(2u^2 - v^2)/(u(u + v))", "(2n^2 - d^2)/(n(n + d))"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "86.б Преобразование выражения (x+a)/(x−b) − (x+c)/x",
+  "question_template": "Преобразуйте выражение:<br>\\( \\tfrac{{x + {a}}}{{x - {b}}} - \\tfrac{{x + {c}}}{{x}} \\)<br>Запишите результат в виде одной дроби. Весь числитель и весь знаменатель возьмите в скобки ",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "a": { "type": "choice", "values": [1, 2, 3, 4, 5, 6, 7, 8] },
+    "b": { "type": "choice", "values": [2, 3, 4, 5, 6, 7, 8, 9] },
+    "c": { "type": "choice", "values": [3, 1, 2, 3, 2, 3, 4, 5] },
+    "ANS": { "type": "choice", "values": ["(6)/(x(x - 2))", "(4x + 3)/(x(x - 3))", "(5x + 8)/(x(x - 4))", "(6x + 15)/(x(x - 5))", "(9x + 12)/(x(x - 6))", "(10x + 21)/(x(x - 7))", "(11x + 32)/(x(x - 8))", "(12x + 45)/(x(x - 9))"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "87.а Преобразование выражения (mx)/(a(x+y)) − (ny)/(b(x+y))",
+  "question_template": "Преобразуйте выражение:<br>\\( \\tfrac{{{m}}x}{{{a}(x + y)}} - \\tfrac{{{n}}y}{{{b}(x + y)}} \\)<br>Запишите результат в виде одной дроби. Весь числитель и весь знаменатель возьмите в скобки",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "m": { "type": "choice", "values": [3, 2, 5, 4, 6, 7, 5, 8] },
+    "n": { "type": "choice", "values": [2, 1, 3, 2, 3, 4, 2, 5] },
+    "a": { "type": "choice", "values": [5, 4, 4, 3, 5, 6, 4, 6] },
+    "b": { "type": "choice", "values": [3, 2, 2, 2, 4, 5, 3, 4] },
+    "ANS": { "type": "choice", "values": ["(9x - 10y)/(15(x + y))", "(x - y)/(2(x + y))", "(5x - 6y)/(4(x + y))", "(4x - 3y)/(3(x + y))", "(24x - 15y)/(20(x + y))", "(35x - 24y)/(30(x + y))", "(15x - 8y)/(12(x + y))", "(16x - 15y)/(12(x + y))"] }
+  },
+  "conditions": ""
+},
+{
+  "textbook_id": 6,
+  "name": "87.б Преобразование выражения a²/(p(a−b)) − b²/(q(a−b))",
+  "question_template": "Преобразуйте выражение:<br>\\( \\tfrac{{a^2}}{{{p}(a - b)}} - \\tfrac{{b^2}}{{{q}(a - b)}} \\)<br>Запишите результат в виде одной дроби.",
+  "answer_template": "{ANS}",
+  "answer_type": "string",
+  "parameters": {
+    "p": { "type": "choice", "values": [5, 3, 4, 2, 6, 3, 4, 7] },
+    "q": { "type": "choice", "values": [4, 2, 3, 1, 5, 6, 8, 5] },
+    "ANS": { "type": "choice", "values": ["(4a^2 - 5b^2)/(20(a - b))", "(2a^2 - 3b^2)/(6(a - b))", "(3a^2 - 4b^2)/(12(a - b))", "(a^2 - 2b^2)/(2(a - b))", "(5a^2 - 6b^2)/(30(a - b))", "(2a^2 - b^2)/(6(a - b))", "(2a^2 - b^2)/(8(a - b))", "(5a^2 - 7b^2)/(35(a - b))"] }
+  },
+  "conditions": ""
 }
 
 
